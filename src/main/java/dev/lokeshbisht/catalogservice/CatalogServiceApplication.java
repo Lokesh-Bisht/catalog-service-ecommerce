@@ -1,13 +1,13 @@
-package dev.lokeshbisht.catalogserviceecommerce;
+package dev.lokeshbisht.catalogservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CatalogServiceEcommerceApplication {
+public class CatalogServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CatalogServiceEcommerceApplication.class, args);
+		SpringApplication.run(CatalogServiceApplication.class, args);
 	}
 
 }

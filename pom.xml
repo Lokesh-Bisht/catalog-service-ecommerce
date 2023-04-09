@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.lokeshbisht</groupId>
-	<artifactId>catalog-service-ecommerce</artifactId>
+	<artifactId>catalog-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>catalog-service-ecommerce</name>
-	<description>Catalog service for Ecommerce example.</description>
+	<name>catalog-service</name>
+	<description>Catalog service for Ecommerce.</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

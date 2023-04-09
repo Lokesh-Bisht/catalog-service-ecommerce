@@ -1,10 +1,10 @@
-package dev.lokeshbisht.catalogserviceecommerce;
+package dev.lokeshbisht.catalogservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CatalogServiceEcommerceApplicationTests {
+class CatalogServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
