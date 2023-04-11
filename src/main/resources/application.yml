@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: ${catalogServiceAppProfile}
+  application:
+    name: catalog-service
+
+server:
+  servlet:
+    context-path: /catalog_service
+  port: ${catalogServiceAppPort}
+
+data:
+  mongodb:
+    uri: ${catalogServiceAppMongoURI}
+    dbName: ${catalogServiceAppMongoDbName}
