@@ -3,13 +3,12 @@ spring:
     active: ${catalogServiceAppProfile}
   application:
     name: catalog-service
+  data:
+    mongodb:
+      uri: ${catalogServiceAppMongoURI}
+      database: ${catalogServiceAppMongoDbName}
 
 server:
   servlet:
     context-path: /catalog_service
   port: ${catalogServiceAppPort}
-
-data:
-  mongodb:
-    uri: ${catalogServiceAppMongoURI}
-    dbName: ${catalogServiceAppMongoDbName}

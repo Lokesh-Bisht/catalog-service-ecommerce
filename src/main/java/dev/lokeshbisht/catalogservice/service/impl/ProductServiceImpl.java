@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
   private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
   @Override
-  public Product addProduct(ProductDto productDto) {
+  public Product createProduct(ProductDto productDto) {
     logger.info("Saving product: {}", productDto);
     try {
       Product product = objectMapper.readValue(objectMapper.writeValueAsString(productDto), Product.class);
