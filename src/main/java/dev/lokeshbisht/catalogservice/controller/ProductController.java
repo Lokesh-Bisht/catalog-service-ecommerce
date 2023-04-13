@@ -21,7 +21,7 @@ public class ProductController {
   private ProductService productService;
 
   @PostMapping()
-  public Product addProduct(@Valid @RequestBody ProductDto productDto) {
-    return productService.addProduct(productDto);
+  public Product createProduct(@Valid @RequestBody ProductDto productDto) {
+    return productService.createProduct(productDto);
   }
 }

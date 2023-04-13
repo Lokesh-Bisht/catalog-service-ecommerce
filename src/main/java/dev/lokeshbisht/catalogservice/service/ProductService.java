@@ -5,5 +5,5 @@ import dev.lokeshbisht.catalogservice.entity.Product;
 
 public interface ProductService {
 
-  Product addProduct(ProductDto productDto);
+  Product createProduct(ProductDto productDto);
 }
