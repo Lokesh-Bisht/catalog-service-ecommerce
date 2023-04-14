@@ -7,10 +7,9 @@ import dev.lokeshbisht.catalogservice.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/product")
@@ -23,5 +22,10 @@ public class ProductController {
   @PostMapping()
   public Product createProduct(@Valid @RequestBody ProductDto productDto) {
     return productService.createProduct(productDto);
+  }
+
+  @GetMapping("/{id}")
+  public Optional<Product> getProduct(@PathVariable("id") String productId) {
+    return productService.getProduct(productId);
   }
 }

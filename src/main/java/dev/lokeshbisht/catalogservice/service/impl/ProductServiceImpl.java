@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.lokeshbisht.catalogservice.dto.ProductDto;
 import dev.lokeshbisht.catalogservice.entity.Product;
 import dev.lokeshbisht.catalogservice.exceptions.JsonRuntimeException;
+import dev.lokeshbisht.catalogservice.exceptions.ProductNotFoundException;
 import dev.lokeshbisht.catalogservice.repository.ProductRepository;
 import dev.lokeshbisht.catalogservice.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -36,5 +39,16 @@ public class ProductServiceImpl implements ProductService {
       logger.error("Error occurred during saving document: {}", productDto);
       throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion.", e);
     }
+  }
+
+  @Override
+  public Optional<Product> getProduct(String productId) {
+    logger.info("Find product with id: {}", productId);
+    Optional<Product> product = productRepository.findByProductId(Integer.parseInt(productId));
+    if (product.isEmpty()) {
+      logger.error("Product not found!");
+      throw new ProductNotFoundException("Product not found.");
+    }
+    return product;
   }
 }
