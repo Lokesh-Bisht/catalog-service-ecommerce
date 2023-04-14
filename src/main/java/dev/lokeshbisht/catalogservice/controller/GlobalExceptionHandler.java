@@ -1,8 +1,10 @@
 package dev.lokeshbisht.catalogservice.controller;
 
 import dev.lokeshbisht.catalogservice.dto.ErrorResponseDto;
+import dev.lokeshbisht.catalogservice.entity.Product;
 import dev.lokeshbisht.catalogservice.enums.ErrorCode;
 import dev.lokeshbisht.catalogservice.exceptions.BadRequestException;
+import dev.lokeshbisht.catalogservice.exceptions.ProductNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,13 @@ public class GlobalExceptionHandler {
     logger.error("BadRequestException occurred due to: {}", ex.getMessage());
     ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.BAD_REQUEST, ex.getMessage());
     return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ProductNotFoundException.class)
+  public ResponseEntity<ErrorResponseDto> handleProductNotFoundException(ProductNotFoundException ex) {
+    logger.error("ProductNotFoundException: {}", ex.getMessage());
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.PRODUCT_NOT_FOUND, ex.getMessage());
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(Exception.class)
