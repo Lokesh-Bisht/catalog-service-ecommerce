@@ -9,4 +9,5 @@ public interface ProductService {
 
   Product createProduct(ProductDto productDto);
   Optional<Product> getProduct(String productId);
+  Product updateProduct(String productId, ProductDto productDto);
 }

@@ -1,6 +1,7 @@
 package dev.lokeshbisht.catalogservice.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.lokeshbisht.catalogservice.dto.ProductDto;
 import dev.lokeshbisht.catalogservice.entity.Product;
@@ -50,5 +51,28 @@ public class ProductServiceImpl implements ProductService {
       throw new ProductNotFoundException("Product not found.");
     }
     return product;
+  }
+
+  @Override
+  public Product updateProduct(String productId, ProductDto productDto) {
+    logger.info("Update product: {} with id: {}", productDto, productId);
+    Optional<Product> product = productRepository.findByProductId(Integer.parseInt(productId));
+    if (product.isEmpty()) {
+      logger.error("Product not found!");
+      throw new ProductNotFoundException("Product not found.");
+    }
+    try {
+      Product updatedProduct = objectMapper.readValue(objectMapper.writeValueAsString(productDto), Product.class);
+      updatedProduct.setId(product.get().getId());
+      Product result = productRepository.save(updatedProduct);
+      logger.info("Successfully updated product.");
+      return result;
+    } catch (JsonMappingException e) {
+      logger.error("Error occurred during updating document: {}", productDto);
+      throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
+    } catch (JsonProcessingException e) {
+      logger.error("Error occurred during updating document: {}", productDto);
+      throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
+    }
   }
 }
