@@ -28,4 +28,9 @@ public class ProductController {
   public Optional<Product> getProduct(@PathVariable("id") String productId) {
     return productService.getProduct(productId);
   }
+
+  @PutMapping("/{id}")
+  public Product updateProduct(@PathVariable("id") String productId, @Valid @RequestBody ProductDto productDto) {
+    return productService.updateProduct(productId, productDto);
+  }
 }
