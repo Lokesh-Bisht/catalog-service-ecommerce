@@ -12,3 +12,12 @@ server:
   servlet:
     context-path: /catalog_service
   port: ${catalogServiceAppPort}
+---
+spring:
+  profiles:
+    active: prod
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
