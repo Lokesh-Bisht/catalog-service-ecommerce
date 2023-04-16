@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -33,6 +34,7 @@ public class ProductServiceImpl implements ProductService {
     try {
       Product product = objectMapper.readValue(objectMapper.writeValueAsString(productDto), Product.class);
       logger.info("product = {}", product);
+      product.setCreatedAt(Instant.now().getEpochSecond());
       Product result = productRepository.save(product);
       logger.info("Successfully added product: {}", result);
       return result;
@@ -64,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
     try {
       Product updatedProduct = objectMapper.readValue(objectMapper.writeValueAsString(productDto), Product.class);
       updatedProduct.setId(product.get().getId());
+      updatedProduct.setUpdatedAt(Instant.now().getEpochSecond());
       Product result = productRepository.save(updatedProduct);
       logger.info("Successfully updated product.");
       return result;

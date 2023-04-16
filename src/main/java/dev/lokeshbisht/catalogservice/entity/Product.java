@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -40,4 +41,16 @@ public class Product {
 
   @JsonProperty("return_count")
   private Long returnCount;
+
+  @JsonProperty("created_at")
+  private Long createdAt;
+
+  @JsonProperty("created_by")
+  private String createdBy;
+
+  @JsonProperty("updated_at")
+  private Long updatedAt;
+
+  @JsonProperty("updated_by")
+  private String updatedBy;
 }
