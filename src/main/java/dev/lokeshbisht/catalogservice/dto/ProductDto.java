@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -49,4 +50,16 @@ public class ProductDto {
 
   @JsonProperty("return_count")
   private Long returnCount;
+
+  @JsonProperty("created_at")
+  private Long createdAt;
+
+  @JsonProperty("created_by")
+  private String createdBy;
+
+  @JsonProperty("updated_at")
+  private Long updatedAt;
+
+  @JsonProperty("updated_by")
+  private String updatedBy;
 }
