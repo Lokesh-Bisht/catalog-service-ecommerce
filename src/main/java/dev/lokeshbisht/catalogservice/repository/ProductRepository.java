@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ProductRepository extends MongoRepository<Product, String> {
 
   Optional<Product> findByProductId(Integer productId);
+  void deleteByProductId(Integer productId);
 }

@@ -75,4 +75,15 @@ public class ProductServiceImpl implements ProductService {
       throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
     }
   }
+
+  @Override
+  public void deleteProduct(String productId) {
+    Optional<Product> product = productRepository.findByProductId(Integer.parseInt(productId));
+    if (product.isEmpty()) {
+      logger.error("Error deleting product with id: {}", productId);
+      throw new ProductNotFoundException("Product not found!");
+    }
+    productRepository.deleteByProductId(Integer.parseInt(productId));
+    logger.info("Successfully deleted product with id: {}", productId);
+  }
 }
