@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.lokeshbisht.catalogservice.dto.ProductDto;
 import dev.lokeshbisht.catalogservice.entity.Product;
 import dev.lokeshbisht.catalogservice.exceptions.JsonRuntimeException;
+import dev.lokeshbisht.catalogservice.exceptions.ProductAlreadyExistsException;
 import dev.lokeshbisht.catalogservice.exceptions.ProductNotFoundException;
 import dev.lokeshbisht.catalogservice.repository.ProductRepository;
 import dev.lokeshbisht.catalogservice.service.ProductService;
@@ -32,6 +33,10 @@ public class ProductServiceImpl implements ProductService {
   public Product createProduct(ProductDto productDto) {
     logger.info("Saving product: {}", productDto);
     try {
+      if (!productRepository.findByProductId(productDto.getProductId()).isEmpty()) {
+        logger.error("Error occurred while saving product. Product already exists!");
+        throw new ProductAlreadyExistsException("Product already exists!");
+      }
       Product product = objectMapper.readValue(objectMapper.writeValueAsString(productDto), Product.class);
       logger.info("product = {}", product);
       product.setCreatedAt(Instant.now().getEpochSecond());
