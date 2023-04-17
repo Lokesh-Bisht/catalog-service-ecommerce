@@ -4,6 +4,7 @@ import dev.lokeshbisht.catalogservice.dto.ErrorResponseDto;
 import dev.lokeshbisht.catalogservice.entity.Product;
 import dev.lokeshbisht.catalogservice.enums.ErrorCode;
 import dev.lokeshbisht.catalogservice.exceptions.BadRequestException;
+import dev.lokeshbisht.catalogservice.exceptions.ProductAlreadyExistsException;
 import dev.lokeshbisht.catalogservice.exceptions.ProductNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,13 @@ public class GlobalExceptionHandler {
     logger.error("ProductNotFoundException: {}", ex.getMessage());
     ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.PRODUCT_NOT_FOUND, ex.getMessage());
     return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(ProductAlreadyExistsException.class)
+  public ResponseEntity<ErrorResponseDto> handleProductAlreadyExistsException(ProductAlreadyExistsException ex) {
+    logger.error("ProductAlreadyExistsException: {}", ex.getMessage());
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.PRODUCT_ALREADY_EXISTS, ex.getMessage());
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(Exception.class)
