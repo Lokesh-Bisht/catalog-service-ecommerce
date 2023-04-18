@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.lokeshbisht.catalogservice.dto.brand.BrandDto;
 import dev.lokeshbisht.catalogservice.entity.Brand;
 import dev.lokeshbisht.catalogservice.exceptions.BrandAlreadyExistsException;
+import dev.lokeshbisht.catalogservice.exceptions.BrandNotFoundException;
 import dev.lokeshbisht.catalogservice.exceptions.JsonRuntimeException;
 import dev.lokeshbisht.catalogservice.repository.BrandRepository;
 import dev.lokeshbisht.catalogservice.service.BrandService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -46,5 +48,17 @@ public class BrandServiceImpl implements BrandService {
       logger.error("Error occurred during saving document: {}", brandDto);
       throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion.", e);
     }
+  }
+
+  @Override
+  public Optional<Brand> getBrand(String brandId) {
+    logger.info("Find brand with id: {}", brandId);
+    Optional<Brand> brand = brandRepository.findByBrandId(Integer.parseInt(brandId));
+    if (brand.isEmpty()) {
+      logger.error("Brand not found!");
+      throw new BrandNotFoundException("Brand not found!");
+    }
+    logger.info("Found brand: {}", brand);
+    return brand;
   }
 }
