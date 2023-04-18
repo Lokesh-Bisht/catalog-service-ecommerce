@@ -1,9 +1,9 @@
 package dev.lokeshbisht.catalogservice.controller;
 
 import dev.lokeshbisht.catalogservice.dto.ErrorResponseDto;
-import dev.lokeshbisht.catalogservice.entity.Product;
 import dev.lokeshbisht.catalogservice.enums.ErrorCode;
 import dev.lokeshbisht.catalogservice.exceptions.BadRequestException;
+import dev.lokeshbisht.catalogservice.exceptions.BrandAlreadyExistsException;
 import dev.lokeshbisht.catalogservice.exceptions.ProductAlreadyExistsException;
 import dev.lokeshbisht.catalogservice.exceptions.ProductNotFoundException;
 import org.slf4j.Logger;
@@ -38,6 +38,13 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponseDto> handleProductAlreadyExistsException(ProductAlreadyExistsException ex) {
     logger.error("ProductAlreadyExistsException: {}", ex.getMessage());
     ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.PRODUCT_ALREADY_EXISTS, ex.getMessage());
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(BrandAlreadyExistsException.class)
+  public ResponseEntity<ErrorResponseDto> handleBrandAlreadyExistsException(BrandAlreadyExistsException ex) {
+    logger.error("BrandAlreadyExistsException: {}", ex.getMessage());
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.BRAND_ALREADY_EXISTS, ex.getMessage());
     return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
   }
 
