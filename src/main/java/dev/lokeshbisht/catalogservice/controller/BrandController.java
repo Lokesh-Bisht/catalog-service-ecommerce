@@ -8,10 +8,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/brand")
@@ -26,5 +25,11 @@ public class BrandController {
   @PostMapping()
   public Brand createBrand(@Valid @RequestBody BrandDto brandDto) {
     return brandService.createBrand(brandDto);
+  }
+
+  @Operation(summary = "createBrand")
+  @GetMapping("/{id}")
+  public Optional<Brand> getBrand(@PathVariable("id") String brandId) {
+    return brandService.getBrand(brandId);
   }
 }

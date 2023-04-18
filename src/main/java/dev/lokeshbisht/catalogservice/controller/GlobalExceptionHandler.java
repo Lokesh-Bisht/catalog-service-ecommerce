@@ -2,10 +2,7 @@ package dev.lokeshbisht.catalogservice.controller;
 
 import dev.lokeshbisht.catalogservice.dto.ErrorResponseDto;
 import dev.lokeshbisht.catalogservice.enums.ErrorCode;
-import dev.lokeshbisht.catalogservice.exceptions.BadRequestException;
-import dev.lokeshbisht.catalogservice.exceptions.BrandAlreadyExistsException;
-import dev.lokeshbisht.catalogservice.exceptions.ProductAlreadyExistsException;
-import dev.lokeshbisht.catalogservice.exceptions.ProductNotFoundException;
+import dev.lokeshbisht.catalogservice.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,6 +36,13 @@ public class GlobalExceptionHandler {
     logger.error("ProductAlreadyExistsException: {}", ex.getMessage());
     ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.PRODUCT_ALREADY_EXISTS, ex.getMessage());
     return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(BrandNotFoundException.class)
+  public ResponseEntity<ErrorResponseDto> handleBrandNotFoundException(BrandNotFoundException ex) {
+    logger.error("BrandNotFoundException: {}", ex.getMessage());
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.BRAND_NOT_FOUND, ex.getMessage());
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(BrandAlreadyExistsException.class)
