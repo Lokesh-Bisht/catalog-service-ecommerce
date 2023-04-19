@@ -61,4 +61,29 @@ public class BrandServiceImpl implements BrandService {
     logger.info("Found brand: {}", brand);
     return brand;
   }
+
+  @Override
+  public Brand updateBrand(String brandId, BrandDto brandDto) {
+    logger.info("Update brand: {} with id: {}", brandDto, brandId);
+    Optional<Brand> brand = brandRepository.findByBrandId(Integer.parseInt(brandId));
+    if (brand.isEmpty()) {
+      logger.error("Brand with id {} is not found.", brandId);
+      throw new BrandNotFoundException("Brand not found!");
+    }
+    try {
+      Brand updatedBrand = objectMapper.readValue(objectMapper.writeValueAsString(brandDto), Brand.class);
+      updatedBrand.setId(brand.get().getId());
+      updatedBrand.setCreatedAt(brand.get().getCreatedAt());
+      updatedBrand.setCreatedBy(brand.get().getCreatedBy());
+      updatedBrand.setUpdatedAt(Instant.now().getEpochSecond());
+      logger.info("Successfully updated brand.");
+      return brandRepository.save(updatedBrand);
+    } catch (JsonMappingException e) {
+      logger.error("Error occurred during updating document: {}", brandDto);
+      throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
+    } catch (JsonProcessingException e) {
+      logger.error("Error occurred during updating document: {}", brandDto);
+      throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
+    }
+  }
 }

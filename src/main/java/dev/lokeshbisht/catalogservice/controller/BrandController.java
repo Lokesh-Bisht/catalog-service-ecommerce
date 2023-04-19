@@ -32,4 +32,10 @@ public class BrandController {
   public Optional<Brand> getBrand(@PathVariable("id") String brandId) {
     return brandService.getBrand(brandId);
   }
+
+  @Operation(summary = "updateBrand")
+  @PutMapping("/{id}")
+  public Brand updateBrand(@PathVariable("id") String brandId, @Valid @RequestBody BrandDto brandDto) {
+    return brandService.updateBrand(brandId, brandDto);
+  }
 }
