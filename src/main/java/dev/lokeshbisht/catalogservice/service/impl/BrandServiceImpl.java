@@ -86,4 +86,15 @@ public class BrandServiceImpl implements BrandService {
       throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
     }
   }
+
+  @Override
+  public void deleteBrand(String brandId) {
+    logger.info("Delete brand with id: {}", brandId);
+    if (brandRepository.findByBrandId(Integer.parseInt(brandId)).isEmpty()) {
+      logger.error("Error deleting brand with id: {}", brandId);
+      throw new BrandNotFoundException("Brand not found!");
+    }
+    brandRepository.deleteByBrandId(Integer.parseInt(brandId));
+    logger.info("Brand with id {} is deleted successfully.", brandId);
+  }
 }
