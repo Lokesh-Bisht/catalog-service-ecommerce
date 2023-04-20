@@ -38,4 +38,10 @@ public class BrandController {
   public Brand updateBrand(@PathVariable("id") String brandId, @Valid @RequestBody BrandDto brandDto) {
     return brandService.updateBrand(brandId, brandDto);
   }
+
+  @Operation(summary = "deleteBrand")
+  @DeleteMapping("/{id}")
+  public void deleteBrand(@PathVariable("id") String brandId) {
+    brandService.deleteBrand(brandId);
+  }
 }
