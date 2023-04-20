@@ -10,4 +10,5 @@ public interface BrandService {
   Brand createBrand(BrandDto brandDto);
   Optional<Brand> getBrand(String brandId);
   Brand updateBrand(String brandId, BrandDto brandDto);
+  void deleteBrand(String brandId);
 }
