@@ -16,6 +16,9 @@ public class Brand {
   @JsonProperty("brand_id")
   private Integer brandId;
 
+  @JsonProperty("category_id")
+  private Integer categoryId;
+
   @JsonProperty("brand_name")
   private String brandName;
 
