@@ -71,6 +71,8 @@ public class ProductServiceImpl implements ProductService {
     try {
       Product updatedProduct = objectMapper.readValue(objectMapper.writeValueAsString(productDto), Product.class);
       updatedProduct.setId(product.get().getId());
+      updatedProduct.setCreatedAt(product.get().getCreatedAt());
+      updatedProduct.setCreatedBy(product.get().getCreatedBy());
       updatedProduct.setUpdatedAt(Instant.now().getEpochSecond());
       Product result = productRepository.save(updatedProduct);
       logger.info("Successfully updated product.");
