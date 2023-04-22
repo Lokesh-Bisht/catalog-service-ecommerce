@@ -52,6 +52,13 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
   }
 
+  @ExceptionHandler(CategoryAlreadyExistsException.class)
+  public ResponseEntity<ErrorResponseDto> handleCategoryAlreadyExistsException(CategoryAlreadyExistsException ex) {
+    logger.error("CategoryAlreadyExistsException: {}", ex.getMessage());
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.CATEGORY_ALREADY_EXISTS, ex.getMessage());
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponseDto> handleAllException(Exception ex) {
     UUID uuid = UUID.randomUUID();
