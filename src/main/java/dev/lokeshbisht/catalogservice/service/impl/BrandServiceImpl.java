@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -96,5 +97,12 @@ public class BrandServiceImpl implements BrandService {
     }
     brandRepository.deleteByBrandId(Integer.parseInt(brandId));
     logger.info("Brand with id {} is deleted successfully.", brandId);
+  }
+
+  @Override
+  public List<Brand> getAllBrandsByCategoryId(String categoryId) {
+    logger.info("Get all brands with category id: {}", categoryId);
+    // Need to add category check
+    return brandRepository.findAllByCategoryId(Integer.parseInt(categoryId));
   }
 }

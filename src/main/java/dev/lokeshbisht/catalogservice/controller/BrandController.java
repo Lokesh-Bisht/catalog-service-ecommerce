@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -43,5 +44,11 @@ public class BrandController {
   @DeleteMapping("/{id}")
   public void deleteBrand(@PathVariable("id") String brandId) {
     brandService.deleteBrand(brandId);
+  }
+
+  @Operation(summary = "getAllBrandsByCategoryId")
+  @GetMapping("/category/{category_id}")
+  public List<Brand> getAllBrandsByCategoryId(@PathVariable("category_id") String categoryId) {
+    return brandService.getAllBrandsByCategoryId(categoryId);
   }
 }

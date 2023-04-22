@@ -18,6 +18,10 @@ public class BrandDto {
   @JsonProperty("brand_id")
   private Integer brandId;
 
+  @NotNull(message = "Category id is required.")
+  @JsonProperty("category_id")
+  private Integer categoryId;
+
   @NotBlank(message = "Brand name cannot be empty.")
   @JsonProperty("brand_name")
   private String brandName;
