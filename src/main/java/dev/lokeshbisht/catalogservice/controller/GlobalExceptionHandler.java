@@ -52,6 +52,13 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
   }
 
+  @ExceptionHandler(CategoryNotFoundException.class)
+  public ResponseEntity<ErrorResponseDto> handleCategoryNotFoundException(CategoryNotFoundException ex) {
+    logger.error("CategoryNotFoundException: {}", ex.getMessage());
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.CATEGORY_NOT_FOUND, ex.getMessage());
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+  }
+
   @ExceptionHandler(CategoryAlreadyExistsException.class)
   public ResponseEntity<ErrorResponseDto> handleCategoryAlreadyExistsException(CategoryAlreadyExistsException ex) {
     logger.error("CategoryAlreadyExistsException: {}", ex.getMessage());

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.lokeshbisht.catalogservice.dto.category.CategoryDto;
 import dev.lokeshbisht.catalogservice.entity.Category;
 import dev.lokeshbisht.catalogservice.exceptions.CategoryAlreadyExistsException;
+import dev.lokeshbisht.catalogservice.exceptions.CategoryNotFoundException;
 import dev.lokeshbisht.catalogservice.exceptions.JsonRuntimeException;
 import dev.lokeshbisht.catalogservice.repository.CategoryRepository;
 import dev.lokeshbisht.catalogservice.service.CategoryService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -46,5 +48,15 @@ public class CategoryServiceImpl implements CategoryService {
       logger.error("Error occurred during saving document: {}", categoryDto);
       throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion.", e);
     }
+  }
+
+  @Override
+  public Optional<Category> getCategory(String categoryId) {
+    logger.info("Get category with id: {}", categoryId);
+    if (categoryRepository.findByCategoryId(Integer.parseInt(categoryId)).isEmpty()) {
+      logger.error("Category not found!");
+      throw new CategoryNotFoundException("Category not found!");
+    }
+    return categoryRepository.findByCategoryId(Integer.parseInt(categoryId));
   }
 }
