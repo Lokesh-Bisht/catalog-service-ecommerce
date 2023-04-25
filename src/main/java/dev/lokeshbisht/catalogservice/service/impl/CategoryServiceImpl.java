@@ -59,4 +59,28 @@ public class CategoryServiceImpl implements CategoryService {
     }
     return categoryRepository.findByCategoryId(Integer.parseInt(categoryId));
   }
+
+  @Override
+  public Category updateCategory(String categoryId, CategoryDto categoryDto) {
+    logger.info("Update category: {} with id: {}", categoryDto, categoryId);
+    Optional<Category> category = categoryRepository.findByCategoryId(Integer.parseInt(categoryId));
+    if (category.isEmpty()) {
+      logger.error("Category with id {} is not found.", categoryId);
+      throw new CategoryNotFoundException("Category not found!");
+    }
+    try {
+      Category updatedCategory = objectMapper.readValue(objectMapper.writeValueAsString(categoryDto), Category.class);
+      updatedCategory.setId(category.get().getId());
+      updatedCategory.setUpdatedAt(Instant.now().getEpochSecond());
+      logger.info("Successfully updated category: {}", updatedCategory);
+      return categoryRepository.save(updatedCategory);
+    } catch (JsonMappingException e) {
+      logger.error("Error occurred during updating document: {}", categoryDto);
+      throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
+    } catch (JsonProcessingException e) {
+      logger.error("Error occurred during updating document: {}", categoryDto);
+      throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
+    }
+
+  }
 }

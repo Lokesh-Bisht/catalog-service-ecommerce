@@ -32,4 +32,10 @@ public class CategoryController {
   Optional<Category> getCategory(@PathVariable("id") String categoryId) {
     return categoryService.getCategory(categoryId);
   }
+
+  @Operation(summary = "updateCategory")
+  @PutMapping("/{id}")
+  Category updateCategory(@PathVariable("id") String categoryId, @Valid @RequestBody CategoryDto categoryDto) {
+    return categoryService.updateCategory(categoryId, categoryDto);
+  }
 }
