@@ -71,6 +71,8 @@ public class CategoryServiceImpl implements CategoryService {
     try {
       Category updatedCategory = objectMapper.readValue(objectMapper.writeValueAsString(categoryDto), Category.class);
       updatedCategory.setId(category.get().getId());
+      updatedCategory.setCreatedBy(category.get().getCreatedBy());
+      updatedCategory.setCreatedAt(category.get().getCreatedAt());
       updatedCategory.setUpdatedAt(Instant.now().getEpochSecond());
       logger.info("Successfully updated category: {}", updatedCategory);
       return categoryRepository.save(updatedCategory);
