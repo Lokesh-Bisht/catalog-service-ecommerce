@@ -17,7 +17,7 @@ public class Category {
   private Integer categoryId;
 
   @JsonProperty("category_name")
-  private String category_name;
+  private String categoryName;
 
   @JsonProperty("created_at")
   private Long createdAt;
