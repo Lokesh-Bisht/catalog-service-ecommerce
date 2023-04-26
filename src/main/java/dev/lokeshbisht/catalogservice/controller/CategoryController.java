@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -44,11 +43,5 @@ public class CategoryController {
   @DeleteMapping("/{id}")
   public void deleteCategory(@PathVariable("id") String categoryId) {
     categoryService.deleteCategory(categoryId);
-  }
-
-  @Operation(summary = "getAllCategories")
-  @GetMapping("/all")
-  public List<Category> getAllCategories() {
-    return categoryService.getAllCategories();
   }
 }

@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -95,11 +94,5 @@ public class CategoryServiceImpl implements CategoryService {
     }
     categoryRepository.deleteByCategoryId(Integer.parseInt(categoryId));
     logger.info("Category with id {} is deleted successfully.", categoryId);
-  }
-
-  @Override
-  public List<Category> getAllCategories() {
-    logger.info("Get all categories.");
-    return categoryRepository.findAll();
   }
 }
