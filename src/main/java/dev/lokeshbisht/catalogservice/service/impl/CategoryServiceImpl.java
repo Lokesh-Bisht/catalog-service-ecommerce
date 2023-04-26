@@ -83,6 +83,16 @@ public class CategoryServiceImpl implements CategoryService {
       logger.error("Error occurred during updating document: {}", categoryDto);
       throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
     }
+  }
 
+  @Override
+  public void deleteCategory(String categoryId) {
+    logger.info("Delete category with id: {}", categoryId);
+    if (categoryRepository.findByCategoryId(Integer.parseInt(categoryId)).isEmpty()) {
+      logger.error("Category with id {} is not found.", categoryId);
+      throw new CategoryNotFoundException("Category not found!");
+    }
+    categoryRepository.deleteByCategoryId(Integer.parseInt(categoryId));
+    logger.info("Category with id {} is deleted successfully.", categoryId);
   }
 }

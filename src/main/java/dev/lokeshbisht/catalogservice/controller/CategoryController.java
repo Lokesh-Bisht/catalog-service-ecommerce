@@ -38,4 +38,10 @@ public class CategoryController {
   Category updateCategory(@PathVariable("id") String categoryId, @Valid @RequestBody CategoryDto categoryDto) {
     return categoryService.updateCategory(categoryId, categoryDto);
   }
+
+  @Operation(summary = "deleteCategory")
+  @DeleteMapping("/{id}")
+  public void deleteCategory(@PathVariable("id") String categoryId) {
+    categoryService.deleteCategory(categoryId);
+  }
 }

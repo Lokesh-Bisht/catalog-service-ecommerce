@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface CategoryRepository extends MongoRepository<Category, String> {
 
   Optional<Category> findByCategoryId(Integer categoryId);
+  void deleteByCategoryId(Integer categoryId);
 }
