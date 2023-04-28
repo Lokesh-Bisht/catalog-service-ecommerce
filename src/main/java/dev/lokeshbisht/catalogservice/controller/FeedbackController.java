@@ -22,4 +22,10 @@ public class FeedbackController {
   public ProductFeedback createProductFeedback(@PathVariable() Integer productId, @Valid @RequestBody ProductFeedbackDto productFeedbackDto) {
     return feedbackService.createProductFeedback(productFeedbackDto);
   }
+
+  @Operation(summary = "deleteProductFeedback")
+  @DeleteMapping("/product/{productId}")
+  public void deleteProductFeedback(@PathVariable Integer productId, @RequestParam(name = "user_id") Integer userId) {
+    feedbackService.deleteProductFeedback(productId, userId);
+  }
 }

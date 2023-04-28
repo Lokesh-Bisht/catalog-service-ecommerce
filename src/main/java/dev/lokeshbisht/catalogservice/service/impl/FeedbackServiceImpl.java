@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.lokeshbisht.catalogservice.dto.feedback.ProductFeedbackDto;
 import dev.lokeshbisht.catalogservice.entity.ProductFeedback;
+import dev.lokeshbisht.catalogservice.exceptions.FeedbackNotFoundException;
 import dev.lokeshbisht.catalogservice.exceptions.JsonRuntimeException;
+import dev.lokeshbisht.catalogservice.repository.CustomProductFeedbackRepository;
 import dev.lokeshbisht.catalogservice.repository.ProductFeedbackRepository;
 import dev.lokeshbisht.catalogservice.service.FeedbackService;
 import org.slf4j.Logger;
@@ -22,6 +24,9 @@ public class FeedbackServiceImpl implements FeedbackService {
 
   @Autowired
   private ProductFeedbackRepository productFeedbackRepository;
+
+  @Autowired
+  private CustomProductFeedbackRepository customProductFeedbackRepository;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -43,5 +48,15 @@ public class FeedbackServiceImpl implements FeedbackService {
     logger.info("User feedback for product {} is saved successfully.", productFeedback.getProductId());
     productFeedbackRepository.save(productFeedback);
     return productFeedback;
+  }
+
+  @Override
+  public void deleteProductFeedback(Integer productId, Integer userId) {
+    logger.info("Delete feedback for user {} and product {}", userId, productId);
+    if (customProductFeedbackRepository.findProductFeedbackByUser(productId, userId).getId() == null) {
+      logger.error("User {} feedback not found for product {}", userId, productId);
+      throw new FeedbackNotFoundException("User " + userId + " feedback not found for product " + productId);
+    }
+    customProductFeedbackRepository.deleteProductFeedbackByUserAndProductId(productId, userId);
   }
 }

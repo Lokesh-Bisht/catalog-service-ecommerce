@@ -66,6 +66,13 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponseDto, HttpStatus.CONFLICT);
   }
 
+  @ExceptionHandler(FeedbackNotFoundException.class)
+  public ResponseEntity<ErrorResponseDto> hadnleFeedbackNotFoundException(FeedbackNotFoundException ex) {
+    logger.error("FeedbackNotFoundException: {}", ex.getMessage());
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.FEEDBACK_NOT_FOUND, ex.getMessage());
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponseDto> handleAllException(Exception ex) {
     UUID uuid = UUID.randomUUID();
