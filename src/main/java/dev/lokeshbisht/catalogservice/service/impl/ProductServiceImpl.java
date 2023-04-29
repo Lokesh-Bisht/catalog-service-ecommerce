@@ -3,16 +3,20 @@ package dev.lokeshbisht.catalogservice.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.lokeshbisht.catalogservice.dto.ProductDto;
+import dev.lokeshbisht.catalogservice.dto.product.ProductDto;
+import dev.lokeshbisht.catalogservice.dto.ProductSearchFilterDto;
+import dev.lokeshbisht.catalogservice.dto.ProductSearchResponseDto;
 import dev.lokeshbisht.catalogservice.entity.Product;
 import dev.lokeshbisht.catalogservice.exceptions.JsonRuntimeException;
 import dev.lokeshbisht.catalogservice.exceptions.ProductAlreadyExistsException;
 import dev.lokeshbisht.catalogservice.exceptions.ProductNotFoundException;
+import dev.lokeshbisht.catalogservice.repository.CustomProductRepository;
 import dev.lokeshbisht.catalogservice.repository.ProductRepository;
 import dev.lokeshbisht.catalogservice.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,6 +27,9 @@ public class ProductServiceImpl implements ProductService {
 
   @Autowired
   private ProductRepository productRepository;
+
+  @Autowired
+  private CustomProductRepository customProductRepository;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -95,5 +102,11 @@ public class ProductServiceImpl implements ProductService {
     }
     productRepository.deleteByProductId(Integer.parseInt(productId));
     logger.info("Successfully deleted product with id: {}", productId);
+  }
+
+  @Override
+  public ProductSearchResponseDto search(String searchQuery, Pageable pageable, ProductSearchFilterDto filters) {
+    logger.info("Start product search with query: {} and filters: {}", searchQuery, filters);
+    return customProductRepository.search(searchQuery, pageable, filters);
   }
 }
