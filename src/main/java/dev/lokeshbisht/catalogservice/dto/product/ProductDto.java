@@ -1,13 +1,11 @@
-package dev.lokeshbisht.catalogservice.dto;
+package dev.lokeshbisht.catalogservice.dto.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.data.mongodb.core.index.TextIndexed;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
