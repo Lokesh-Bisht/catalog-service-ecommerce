@@ -28,4 +28,10 @@ public class FeedbackController {
   public void deleteProductFeedback(@PathVariable Integer productId, @RequestParam(name = "user_id") Integer userId) {
     feedbackService.deleteProductFeedback(productId, userId);
   }
+
+  @Operation(summary = "upsertProductFeedback")
+  @PutMapping("/product/{productId}")
+  public ProductFeedback upsertProductFeedback(@PathVariable Integer productId, @Valid @RequestBody ProductFeedbackDto productFeedbackDto) {
+    return feedbackService.upsertProductFeedback(productId, productFeedbackDto);
+  }
 }
