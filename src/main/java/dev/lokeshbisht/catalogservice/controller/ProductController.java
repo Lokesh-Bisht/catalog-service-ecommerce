@@ -57,7 +57,7 @@ public class ProductController {
           @RequestParam(defaultValue = "") String query,
           @RequestParam(defaultValue = "1") Integer page,
           @RequestParam(defaultValue = "5") Integer size,
-          @RequestParam(defaultValue = "product_id") String sort,
+          @RequestParam(defaultValue = "productId") String sort,
           @RequestParam(defaultValue = "ASC") String order,
           @RequestBody(required = false) ProductSearchFilterDto filter
   ) {
