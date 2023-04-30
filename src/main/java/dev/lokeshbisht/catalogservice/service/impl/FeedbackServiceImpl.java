@@ -59,4 +59,30 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
     customProductFeedbackRepository.deleteProductFeedbackByUserAndProductId(productId, userId);
   }
+
+  @Override
+  public ProductFeedback upsertProductFeedback(Integer productId, ProductFeedbackDto productFeedbackDto) {
+    logger.info("Upsert product feedback for productId: {} and feedback: {}", productId, productFeedbackDto);
+    ProductFeedback productFeedback;
+    try {
+      productFeedback = objectMapper.readValue(objectMapper.writeValueAsString(productFeedbackDto), ProductFeedback.class);
+    } catch (JsonMappingException e) {
+      logger.error("Error occurred during updating document: {}", productFeedbackDto);
+      throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
+    } catch (JsonProcessingException e) {
+      logger.error("Error occurred during updating document: {}", productFeedbackDto);
+      throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
+    }
+    ProductFeedback oldProductFeedback = customProductFeedbackRepository.findProductFeedbackByUser(productId, productFeedback.getUserId());
+    if (oldProductFeedback == null) {
+      productFeedback.setCreatedAt(Instant.now().getEpochSecond());
+      logger.info("Inserting product feedback: {}", productFeedback);
+    } else {
+      productFeedback.setId(oldProductFeedback.getId());
+      productFeedback.setCreatedAt(oldProductFeedback.getCreatedAt());
+      productFeedback.setUpdatedAt(Instant.now().getEpochSecond());
+      logger.info("Updating product feedback: {}", productFeedback);
+    }
+    return productFeedbackRepository.save(productFeedback);
+  }
 }
