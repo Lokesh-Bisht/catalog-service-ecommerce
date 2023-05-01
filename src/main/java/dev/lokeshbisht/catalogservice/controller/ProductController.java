@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -63,5 +64,11 @@ public class ProductController {
   ) {
     Pageable pageable = PageRequest.of(page, size, Sort.by(sort, order));
     return productService.search(query, pageable, filter);
+  }
+
+  @Operation(summary = "bulkCreateProduct")
+  @PostMapping("/bulk")
+  public void bulkCreateProduct(@Valid @RequestBody List<ProductDto> productDtoList) {
+    productService.bulkCreateProduct(productDtoList);
   }
 }

@@ -7,6 +7,10 @@ spring:
     mongodb:
       uri: ${catalogServiceAppMongoURI}
       database: ${catalogServiceAppMongoDbName}
+kafka:
+  bootstrap-servers: ${kafkaBootstrapServers}
+  topic:
+    product: ${kafkaTopicProduct}
 
 server:
   servlet:
