@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
   @Autowired
   private KafkaTemplate kafkaTemplate;
 
-  @Value("${kafka.topic.product}")
+  @Value("${kafka.topic[0].product}")
   private String productTopic;
 
   private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -125,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
   public void bulkCreateProduct(List<ProductDto> productDtoList) {
     logger.info("Starting bulkCreateProduct");
     for (ProductDto productDto : productDtoList) {
-      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(productTopic, productDto);
+      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(productTopic, productDto.getProductId().toString(), productDto);
       future.whenComplete((result, ex) -> {
         if (ex == null) {
           logger.info("Successfully pushed message: {} to kafka topic: {}", productDto, productTopic);
