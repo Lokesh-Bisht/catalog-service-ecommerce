@@ -13,4 +13,5 @@ public interface BrandService {
   Brand updateBrand(String brandId, BrandDto brandDto);
   void deleteBrand(String brandId);
   List<Brand> getAllBrandsByCategoryId(String categoryId);
+  void bulkCreateBrand(List<BrandDto> brandDtoList);
 }

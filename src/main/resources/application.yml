@@ -10,7 +10,8 @@ spring:
 kafka:
   bootstrap-servers: ${kafkaBootstrapServers}
   topic:
-    product: ${kafkaTopicProduct}
+    - product: ${kafkaTopicProduct}
+    - brand: ${kafkaTopicBrand}
 
 server:
   servlet:

@@ -51,4 +51,10 @@ public class BrandController {
   public List<Brand> getAllBrandsByCategoryId(@PathVariable("category_id") String categoryId) {
     return brandService.getAllBrandsByCategoryId(categoryId);
   }
+
+  @Operation(summary = "bulkCreateBrand")
+  @PostMapping("/bulk")
+  public void bulkCreateBrand(@Valid @RequestBody List<BrandDto> brandDtoList) {
+    brandService.bulkCreateBrand(brandDtoList);
+  }
 }
