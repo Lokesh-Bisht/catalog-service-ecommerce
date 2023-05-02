@@ -13,11 +13,15 @@ import dev.lokeshbisht.catalogservice.service.BrandService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -27,6 +31,12 @@ public class BrandServiceImpl implements BrandService {
 
   @Autowired
   private ObjectMapper objectMapper;
+
+  @Autowired
+  private KafkaTemplate kafkaTemplate;
+
+  @Value("${kafka.topic[1].brand}")
+  private String brandTopic;
 
   private static final Logger logger = LoggerFactory.getLogger(BrandServiceImpl.class);
 
@@ -104,5 +114,20 @@ public class BrandServiceImpl implements BrandService {
     logger.info("Get all brands with category id: {}", categoryId);
     // Need to add category check
     return brandRepository.findAllByCategoryId(Integer.parseInt(categoryId));
+  }
+
+  @Override
+  public void bulkCreateBrand(List<BrandDto> brandDtoList) {
+    logger.info("Starting bulkCreateBrand");
+    for (BrandDto brandDto : brandDtoList) {
+      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(brandTopic, brandDto.getBrandId().toString(), brandDto);
+      future.whenComplete((result, ex) -> {
+        if (ex == null) {
+          logger.info("Successfully pushed message: {} to kafka topic: {}", brandDto, brandTopic);
+        } else {
+          logger.error("Error while pushing message: {} to kafka topic: {}", brandDto, brandTopic);
+        }
+      });
+    }
   }
 }
