@@ -13,11 +13,15 @@ import dev.lokeshbisht.catalogservice.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -27,6 +31,12 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Autowired
   private ObjectMapper objectMapper;
+
+  @Autowired
+  private KafkaTemplate kafkaTemplate;
+
+  @Value("${kafka.topic[2].category}")
+  private String categoryTopic;
 
   private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
@@ -101,5 +111,20 @@ public class CategoryServiceImpl implements CategoryService {
   public List<Category> getAllCategories() {
     logger.info("Get all categories.");
     return categoryRepository.findAll();
+  }
+
+  @Override
+  public void bulkCreateCategory(List<CategoryDto> categoryDtoList) {
+    logger.info("Starting bulkCreateCategory");
+    for (CategoryDto categoryDto : categoryDtoList) {
+      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(categoryTopic, categoryDto.getCategoryId().toString(), categoryDto);
+      future.whenComplete((result, ex) -> {
+        if (ex == null) {
+          logger.info("Successfully pushed message: {} to kafka topic: {}", categoryDto, categoryTopic);
+        } else {
+          logger.error("Error while pushing message: {} to kafka topic: {}", categoryDto, categoryTopic);
+        }
+      });
+    }
   }
 }

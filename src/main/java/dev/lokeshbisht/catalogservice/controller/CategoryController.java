@@ -51,4 +51,10 @@ public class CategoryController {
   public List<Category> getAllCategories() {
     return categoryService.getAllCategories();
   }
+
+  @Operation(summary = "bulkCreateCategory")
+  @PostMapping("/bulk")
+  public void bulkCreateCategory(@Valid @RequestBody List<CategoryDto> categoryDtoList) {
+    categoryService.bulkCreateCategory(categoryDtoList);
+  }
 }
