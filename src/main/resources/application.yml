@@ -12,6 +12,7 @@ kafka:
   topic:
     - product: ${kafkaTopicProduct}
     - brand: ${kafkaTopicBrand}
+    - category: ${kafkaTopicCategory}
 
 server:
   servlet:
