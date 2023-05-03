@@ -13,4 +13,5 @@ public interface CategoryService {
   Category updateCategory(String categoryId, CategoryDto categoryDto);
   void deleteCategory(String categoryId);
   List<Category> getAllCategories();
+  void bulkCreateCategory(List<CategoryDto> categoryDtoList);
 }
