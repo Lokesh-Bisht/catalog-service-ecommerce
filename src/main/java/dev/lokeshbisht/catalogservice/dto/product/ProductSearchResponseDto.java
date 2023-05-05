@@ -1,4 +1,4 @@
-package dev.lokeshbisht.catalogservice.dto;
+package dev.lokeshbisht.catalogservice.dto.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
