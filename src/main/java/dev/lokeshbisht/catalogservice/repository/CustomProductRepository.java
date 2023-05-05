@@ -1,7 +1,7 @@
 package dev.lokeshbisht.catalogservice.repository;
 
-import dev.lokeshbisht.catalogservice.dto.ProductSearchFilterDto;
-import dev.lokeshbisht.catalogservice.dto.ProductSearchResponseDto;
+import dev.lokeshbisht.catalogservice.dto.product.ProductSearchFilterDto;
+import dev.lokeshbisht.catalogservice.dto.product.ProductSearchResponseDto;
 import org.springframework.data.domain.Pageable;
 
 public interface CustomProductRepository {
