@@ -1,8 +1,8 @@
 package dev.lokeshbisht.catalogservice.controller;
 
 import dev.lokeshbisht.catalogservice.dto.product.ProductDto;
-import dev.lokeshbisht.catalogservice.dto.ProductSearchFilterDto;
-import dev.lokeshbisht.catalogservice.dto.ProductSearchResponseDto;
+import dev.lokeshbisht.catalogservice.dto.product.ProductSearchFilterDto;
+import dev.lokeshbisht.catalogservice.dto.product.ProductSearchResponseDto;
 import dev.lokeshbisht.catalogservice.entity.Product;
 import dev.lokeshbisht.catalogservice.service.ProductService;
 
