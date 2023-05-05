@@ -1,12 +1,17 @@
 package dev.lokeshbisht.catalogservice.controller;
 
 import dev.lokeshbisht.catalogservice.dto.brand.BrandDto;
+import dev.lokeshbisht.catalogservice.dto.brand.BrandSearchFilterDto;
+import dev.lokeshbisht.catalogservice.dto.brand.BrandSearchResponseDto;
 import dev.lokeshbisht.catalogservice.entity.Brand;
 import dev.lokeshbisht.catalogservice.service.BrandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +55,23 @@ public class BrandController {
   @GetMapping("/category/{category_id}")
   public List<Brand> getAllBrandsByCategoryId(@PathVariable("category_id") String categoryId) {
     return brandService.getAllBrandsByCategoryId(categoryId);
+  }
+
+  @Operation(summary = "search")
+  @PostMapping("/search")
+  public BrandSearchResponseDto search(
+          @RequestParam(defaultValue = "") String query,
+          @RequestParam(defaultValue = "1") Integer page,
+          @RequestParam(defaultValue = "5") Integer size,
+          @RequestParam(defaultValue = "brandId") String sort,
+          @RequestParam(defaultValue = "ASC") String order,
+          @RequestBody(required = false)BrandSearchFilterDto filter
+          ) {
+    Pageable pageable;
+    pageable = order.equalsIgnoreCase("ASC") ?
+            PageRequest.of(page, size, Sort.by(sort).ascending()) :
+            PageRequest.of(page, size, Sort.by(sort).descending());
+    return brandService.search(query, pageable, filter);
   }
 
   @Operation(summary = "bulkCreateBrand")

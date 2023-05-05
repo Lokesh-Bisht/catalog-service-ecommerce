@@ -4,16 +4,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.lokeshbisht.catalogservice.dto.brand.BrandDto;
+import dev.lokeshbisht.catalogservice.dto.brand.BrandSearchFilterDto;
+import dev.lokeshbisht.catalogservice.dto.brand.BrandSearchResponseDto;
 import dev.lokeshbisht.catalogservice.entity.Brand;
 import dev.lokeshbisht.catalogservice.exceptions.BrandAlreadyExistsException;
 import dev.lokeshbisht.catalogservice.exceptions.BrandNotFoundException;
 import dev.lokeshbisht.catalogservice.exceptions.JsonRuntimeException;
 import dev.lokeshbisht.catalogservice.repository.BrandRepository;
+import dev.lokeshbisht.catalogservice.repository.CustomBrandRepository;
 import dev.lokeshbisht.catalogservice.service.BrandService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,9 @@ public class BrandServiceImpl implements BrandService {
 
   @Autowired
   private BrandRepository brandRepository;
+
+  @Autowired
+  private CustomBrandRepository customBrandRepository;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -114,6 +121,12 @@ public class BrandServiceImpl implements BrandService {
     logger.info("Get all brands with category id: {}", categoryId);
     // Need to add category check
     return brandRepository.findAllByCategoryId(Integer.parseInt(categoryId));
+  }
+
+  @Override
+  public BrandSearchResponseDto search(String searchQuery, Pageable page, BrandSearchFilterDto filter) {
+    logger.info("Start brand search with query: {} and filters: {}", searchQuery, filter);
+    return customBrandRepository.search(searchQuery, page, filter);
   }
 
   @Override
