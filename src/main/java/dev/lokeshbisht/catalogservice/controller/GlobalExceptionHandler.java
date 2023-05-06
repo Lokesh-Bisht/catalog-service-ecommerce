@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(FeedbackNotFoundException.class)
-  public ResponseEntity<ErrorResponseDto> hadnleFeedbackNotFoundException(FeedbackNotFoundException ex) {
+  public ResponseEntity<ErrorResponseDto> handleFeedbackNotFoundException(FeedbackNotFoundException ex) {
     logger.error("FeedbackNotFoundException: {}", ex.getMessage());
     ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.FEEDBACK_NOT_FOUND, ex.getMessage());
     return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);

@@ -24,7 +24,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
   @Autowired
   private MongoTemplate mongoTemplate;
 
-  private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+  private static final Logger logger = LoggerFactory.getLogger(CustomBrandRepositoryImpl.class);
 
   @Override
   public ProductSearchResponseDto search(String searchQuery, Pageable pageable, ProductSearchFilterDto filter) {
@@ -48,7 +48,7 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
     }
     Long count = mongoTemplate.count(query, Product.class);
     query.with(pageable);
-    logger.debug("query = {}", query);
+    logger.debug("Product search query = {}", query);
     List<Product> result = mongoTemplate.find(query, Product.class);
     return new ProductSearchResponseDto(result, pageable.getPageNumber(), pageable.getPageSize(), count);
   }
