@@ -7,5 +7,5 @@ import lombok.Data;
 public class BrandSearchFilterDto {
 
   @JsonProperty("category_id")
-  private String categoryId;
+  private Integer categoryId;
 }
