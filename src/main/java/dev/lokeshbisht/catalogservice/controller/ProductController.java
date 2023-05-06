@@ -62,7 +62,9 @@ public class ProductController {
           @RequestParam(defaultValue = "ASC") String order,
           @RequestBody(required = false) ProductSearchFilterDto filter
   ) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by(sort, order));
+    Pageable pageable = order.equalsIgnoreCase("ASC") ?
+            PageRequest.of(page, size, Sort.by(sort).ascending()) :
+            PageRequest.of(page, size, Sort.by(sort).descending());
     return productService.search(query, pageable, filter);
   }
 
