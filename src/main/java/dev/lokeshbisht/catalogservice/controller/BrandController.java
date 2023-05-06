@@ -67,8 +67,7 @@ public class BrandController {
           @RequestParam(defaultValue = "ASC") String order,
           @RequestBody(required = false)BrandSearchFilterDto filter
           ) {
-    Pageable pageable;
-    pageable = order.equalsIgnoreCase("ASC") ?
+    Pageable pageable = order.equalsIgnoreCase("ASC") ?
             PageRequest.of(page, size, Sort.by(sort).ascending()) :
             PageRequest.of(page, size, Sort.by(sort).descending());
     return brandService.search(query, pageable, filter);

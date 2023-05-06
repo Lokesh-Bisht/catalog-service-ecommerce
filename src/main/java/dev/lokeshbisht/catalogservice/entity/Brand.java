@@ -3,6 +3,7 @@ package dev.lokeshbisht.catalogservice.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document()
@@ -20,8 +21,10 @@ public class Brand {
   private Integer categoryId;
 
   @JsonProperty("brand_name")
+  @TextIndexed
   private String brandName;
 
+  @TextIndexed
   private String description;
 
   @JsonProperty("brand_logo")
