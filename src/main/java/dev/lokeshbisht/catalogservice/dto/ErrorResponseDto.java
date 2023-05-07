@@ -18,4 +18,12 @@ public class ErrorResponseDto {
 
   @JsonProperty("error_message")
   private String errorMessage;
+
+  @JsonProperty("errors")
+  private Object errors;
+
+  public ErrorResponseDto(ErrorCode errorCode, String errorMessage) {
+    this.errorCode = errorCode;
+    this.errorMessage = errorMessage;
+  }
 }

@@ -7,9 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestControllerAdvice
@@ -71,6 +75,19 @@ public class GlobalExceptionHandler {
     logger.error("FeedbackNotFoundException: {}", ex.getMessage());
     ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.FEEDBACK_NOT_FOUND, ex.getMessage());
     return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ErrorResponseDto> handleValidationException(MethodArgumentNotValidException ex) {
+    logger.error("MethodArgumentNotValidException: {}", ex.getMessage());
+    Map<String, String> errors = new HashMap<>();
+    ex.getBindingResult().getAllErrors().forEach((error) -> {
+      String fieldName = ((FieldError) error).getField();
+      String errorMessage = error.getDefaultMessage();
+      errors.put(fieldName, errorMessage);
+    });
+    ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.BAD_REQUEST, "Missing required information to process the request.", errors);
+    return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(Exception.class)
