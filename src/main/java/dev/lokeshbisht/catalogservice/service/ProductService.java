@@ -1,5 +1,6 @@
 package dev.lokeshbisht.catalogservice.service;
 
+import dev.lokeshbisht.catalogservice.dto.product.MostAndLeastSoldProductsDto;
 import dev.lokeshbisht.catalogservice.dto.product.ProductDto;
 import dev.lokeshbisht.catalogservice.dto.product.ProductSearchFilterDto;
 import dev.lokeshbisht.catalogservice.dto.product.ProductSearchResponseDto;
@@ -17,4 +18,5 @@ public interface ProductService {
   void deleteProduct(String productId);
   ProductSearchResponseDto search(String query, Pageable pageable, ProductSearchFilterDto filter);
   void bulkCreateProduct(List<ProductDto> productDtoList);
+  MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts();
 }
