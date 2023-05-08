@@ -3,6 +3,7 @@ package dev.lokeshbisht.catalogservice.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.lokeshbisht.catalogservice.dto.product.MostAndLeastSoldProductsDto;
 import dev.lokeshbisht.catalogservice.dto.product.ProductDto;
 import dev.lokeshbisht.catalogservice.dto.product.ProductSearchFilterDto;
 import dev.lokeshbisht.catalogservice.dto.product.ProductSearchResponseDto;
@@ -134,5 +135,10 @@ public class ProductServiceImpl implements ProductService {
         }
       });
     }
+  }
+
+  @Override
+  public MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts() {
+    return customProductRepository.topFiveMostAndLeastSoldProducts();
   }
 }

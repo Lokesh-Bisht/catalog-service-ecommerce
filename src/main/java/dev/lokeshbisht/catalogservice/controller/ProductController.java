@@ -1,5 +1,6 @@
 package dev.lokeshbisht.catalogservice.controller;
 
+import dev.lokeshbisht.catalogservice.dto.product.MostAndLeastSoldProductsDto;
 import dev.lokeshbisht.catalogservice.dto.product.ProductDto;
 import dev.lokeshbisht.catalogservice.dto.product.ProductSearchFilterDto;
 import dev.lokeshbisht.catalogservice.dto.product.ProductSearchResponseDto;
@@ -72,5 +73,11 @@ public class ProductController {
   @PostMapping("/bulk")
   public void bulkCreateProduct(@Valid @RequestBody List<ProductDto> productDtoList) {
     productService.bulkCreateProduct(productDtoList);
+  }
+
+  @Operation(summary = "topFiveMostAndLeastSoldProducts")
+  @GetMapping("/most_and_least_sold")
+  public MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts() {
+    return productService.topFiveMostAndLeastSoldProducts();
   }
 }
