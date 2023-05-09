@@ -1,9 +1,6 @@
 package dev.lokeshbisht.catalogservice.controller;
 
-import dev.lokeshbisht.catalogservice.dto.product.MostAndLeastSoldProductsDto;
-import dev.lokeshbisht.catalogservice.dto.product.ProductDto;
-import dev.lokeshbisht.catalogservice.dto.product.ProductSearchFilterDto;
-import dev.lokeshbisht.catalogservice.dto.product.ProductSearchResponseDto;
+import dev.lokeshbisht.catalogservice.dto.product.*;
 import dev.lokeshbisht.catalogservice.entity.Product;
 import dev.lokeshbisht.catalogservice.service.ProductService;
 
@@ -85,5 +82,14 @@ public class ProductController {
   @GetMapping("/most_return")
   public List<Product> getTopTenMostReturnProducts() {
     return productService.getTopTenMostReturnProducts();
+  }
+
+  @Operation(summary = "updateProductSoldAndReturnCount")
+  @PatchMapping("/{id}")
+  public Product updateProductSoldAndReturnCount(
+          @PathVariable("id") Integer productId,
+          @RequestBody UpdateProductSoldAndReturnCountDto updateProductSoldAndReturnCountDto
+  ) {
+    return productService.updateProductSoldAndReturnCount(productId, updateProductSoldAndReturnCountDto);
   }
 }

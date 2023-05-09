@@ -1,9 +1,6 @@
 package dev.lokeshbisht.catalogservice.service;
 
-import dev.lokeshbisht.catalogservice.dto.product.MostAndLeastSoldProductsDto;
-import dev.lokeshbisht.catalogservice.dto.product.ProductDto;
-import dev.lokeshbisht.catalogservice.dto.product.ProductSearchFilterDto;
-import dev.lokeshbisht.catalogservice.dto.product.ProductSearchResponseDto;
+import dev.lokeshbisht.catalogservice.dto.product.*;
 import dev.lokeshbisht.catalogservice.entity.Product;
 import org.springframework.data.domain.Pageable;
 
@@ -20,4 +17,5 @@ public interface ProductService {
   void bulkCreateProduct(List<ProductDto> productDtoList);
   MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts();
   List<Product> getTopTenMostReturnProducts();
+  Product updateProductSoldAndReturnCount(Integer productId, UpdateProductSoldAndReturnCountDto updateProductSoldAndReturnCountDto);
 }

@@ -3,10 +3,7 @@ package dev.lokeshbisht.catalogservice.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.lokeshbisht.catalogservice.dto.product.MostAndLeastSoldProductsDto;
-import dev.lokeshbisht.catalogservice.dto.product.ProductDto;
-import dev.lokeshbisht.catalogservice.dto.product.ProductSearchFilterDto;
-import dev.lokeshbisht.catalogservice.dto.product.ProductSearchResponseDto;
+import dev.lokeshbisht.catalogservice.dto.product.*;
 import dev.lokeshbisht.catalogservice.entity.Product;
 import dev.lokeshbisht.catalogservice.exceptions.JsonRuntimeException;
 import dev.lokeshbisht.catalogservice.exceptions.ProductAlreadyExistsException;
@@ -145,5 +142,21 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public List<Product> getTopTenMostReturnProducts() {
     return customProductRepository.findTopTenMostReturnProducts();
+  }
+
+  @Override
+  public Product updateProductSoldAndReturnCount(Integer productId, UpdateProductSoldAndReturnCountDto updateProductSoldAndReturnCountDto) {
+    logger.info("Start updateProductSoldAndReturnCount for productId: {}, and data: {}", productId, updateProductSoldAndReturnCountDto);
+    Product product = productRepository.findByProductId(productId).get();
+    if (product == null) {
+      logger.error("Product not found!");
+      throw new ProductNotFoundException("Product not found!");
+    }
+    product.setSoldCount(updateProductSoldAndReturnCountDto.getSoldCount());
+    product.setReturnCount(updateProductSoldAndReturnCountDto.getReturnCount());
+    product.setUpdatedBy(updateProductSoldAndReturnCountDto.getUpdatedBy());
+    product.setUpdatedAt(Instant.now().getEpochSecond());
+    logger.info("Updated product: {}", product);
+    return productRepository.save(product);
   }
 }
