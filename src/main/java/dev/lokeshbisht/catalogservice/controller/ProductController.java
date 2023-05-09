@@ -80,4 +80,10 @@ public class ProductController {
   public MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts() {
     return productService.topFiveMostAndLeastSoldProducts();
   }
+
+  @Operation(summary = "getTopTenMostReturnProducts")
+  @GetMapping("/most_return")
+  public List<Product> getTopTenMostReturnProducts() {
+    return productService.getTopTenMostReturnProducts();
+  }
 }

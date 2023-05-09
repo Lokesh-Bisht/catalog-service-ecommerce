@@ -19,4 +19,5 @@ public interface ProductService {
   ProductSearchResponseDto search(String query, Pageable pageable, ProductSearchFilterDto filter);
   void bulkCreateProduct(List<ProductDto> productDtoList);
   MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts();
+  List<Product> getTopTenMostReturnProducts();
 }
