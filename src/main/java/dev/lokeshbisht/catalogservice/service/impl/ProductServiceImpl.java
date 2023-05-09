@@ -141,4 +141,9 @@ public class ProductServiceImpl implements ProductService {
   public MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts() {
     return customProductRepository.topFiveMostAndLeastSoldProducts();
   }
+
+  @Override
+  public List<Product> getTopTenMostReturnProducts() {
+    return customProductRepository.findTopTenMostReturnProducts();
+  }
 }

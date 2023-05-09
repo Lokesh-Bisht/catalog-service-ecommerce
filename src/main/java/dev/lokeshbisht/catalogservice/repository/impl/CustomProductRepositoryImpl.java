@@ -65,4 +65,11 @@ public class CustomProductRepositoryImpl implements CustomProductRepository {
     List<Product> leastSold = mongoTemplate.find(query, Product.class);
     return new MostAndLeastSoldProductsDto(mostSold, leastSold);
   }
+
+  @Override
+  public List<Product> findTopTenMostReturnProducts() {
+    Query query = new Query();
+    query.with(Sort.by(Sort.Direction.DESC, "returnCount")).limit(10);
+    return mongoTemplate.find(query, Product.class);
+  }
 }
