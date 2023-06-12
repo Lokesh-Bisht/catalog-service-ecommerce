@@ -23,73 +23,73 @@ import java.util.Optional;
 @Tag(name = "ProductController", description = "Product Controller")
 public class ProductController {
 
-  @Autowired
-  private ProductService productService;
+    @Autowired
+    private ProductService productService;
 
-  @Operation(summary = "createProduct")
-  @PostMapping()
-  public Product createProduct(@Valid @RequestBody ProductDto productDto) {
-    return productService.createProduct(productDto);
-  }
+    @Operation(summary = "createProduct")
+    @PostMapping()
+    public Product createProduct(@Valid @RequestBody ProductDto productDto) {
+        return productService.createProduct(productDto);
+    }
 
-  @Operation(summary = "getProduct")
-  @GetMapping("/{id}")
-  public Optional<Product> getProduct(@PathVariable("id") String productId) {
-    return productService.getProduct(productId);
-  }
+    @Operation(summary = "getProduct")
+    @GetMapping("/{id}")
+    public Optional<Product> getProduct(@PathVariable("id") String productId) {
+        return productService.getProduct(productId);
+    }
 
-  @Operation(summary = "updateProduct")
-  @PutMapping("/{id}")
-  public Product updateProduct(@PathVariable("id") String productId, @Valid @RequestBody ProductDto productDto) {
-    return productService.updateProduct(productId, productDto);
-  }
+    @Operation(summary = "updateProduct")
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable("id") String productId, @Valid @RequestBody ProductDto productDto) {
+        return productService.updateProduct(productId, productDto);
+    }
 
-  @Operation(summary = "deleteProduct")
-  @DeleteMapping("/{id}")
-  public void deleteProduct(@PathVariable("id") String productId) {
-    productService.deleteProduct(productId);
-  }
+    @Operation(summary = "deleteProduct")
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable("id") String productId) {
+        productService.deleteProduct(productId);
+    }
 
-  @Operation(summary = "search")
-  @PostMapping("/search")
-  public ProductSearchResponseDto search(
-          @RequestParam(defaultValue = "") String query,
-          @RequestParam(defaultValue = "1") Integer page,
-          @RequestParam(defaultValue = "5") Integer size,
-          @RequestParam(defaultValue = "productId") String sort,
-          @RequestParam(defaultValue = "ASC") String order,
-          @RequestBody(required = false) ProductSearchFilterDto filter
-  ) {
-    Pageable pageable = order.equalsIgnoreCase("ASC") ?
+    @Operation(summary = "search")
+    @PostMapping("/search")
+    public ProductSearchResponseDto search(
+        @RequestParam(defaultValue = "") String query,
+        @RequestParam(defaultValue = "1") Integer page,
+        @RequestParam(defaultValue = "5") Integer size,
+        @RequestParam(defaultValue = "productId") String sort,
+        @RequestParam(defaultValue = "ASC") String order,
+        @RequestBody(required = false) ProductSearchFilterDto filter
+    ) {
+        Pageable pageable = order.equalsIgnoreCase("ASC") ?
             PageRequest.of(page, size, Sort.by(sort).ascending()) :
             PageRequest.of(page, size, Sort.by(sort).descending());
-    return productService.search(query, pageable, filter);
-  }
+        return productService.search(query, pageable, filter);
+    }
 
-  @Operation(summary = "bulkCreateProduct")
-  @PostMapping("/bulk")
-  public void bulkCreateProduct(@Valid @RequestBody List<ProductDto> productDtoList) {
-    productService.bulkCreateProduct(productDtoList);
-  }
+    @Operation(summary = "bulkCreateProduct")
+    @PostMapping("/bulk")
+    public void bulkCreateProduct(@Valid @RequestBody List<ProductDto> productDtoList) {
+        productService.bulkCreateProduct(productDtoList);
+    }
 
-  @Operation(summary = "topFiveMostAndLeastSoldProducts")
-  @GetMapping("/most_and_least_sold")
-  public MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts() {
-    return productService.topFiveMostAndLeastSoldProducts();
-  }
+    @Operation(summary = "topFiveMostAndLeastSoldProducts")
+    @GetMapping("/most_and_least_sold")
+    public MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts() {
+        return productService.topFiveMostAndLeastSoldProducts();
+    }
 
-  @Operation(summary = "getTopTenMostReturnProducts")
-  @GetMapping("/most_return")
-  public List<Product> getTopTenMostReturnProducts() {
-    return productService.getTopTenMostReturnProducts();
-  }
+    @Operation(summary = "getTopTenMostReturnProducts")
+    @GetMapping("/most_return")
+    public List<Product> getTopTenMostReturnProducts() {
+        return productService.getTopTenMostReturnProducts();
+    }
 
-  @Operation(summary = "updateProductSoldAndReturnCount")
-  @PatchMapping("/{id}")
-  public Product updateProductSoldAndReturnCount(
-          @PathVariable("id") Integer productId,
-          @RequestBody UpdateProductSoldAndReturnCountDto updateProductSoldAndReturnCountDto
-  ) {
-    return productService.updateProductSoldAndReturnCount(productId, updateProductSoldAndReturnCountDto);
-  }
+    @Operation(summary = "updateProductSoldAndReturnCount")
+    @PatchMapping("/{id}")
+    public Product updateProductSoldAndReturnCount(
+        @PathVariable("id") Integer productId,
+        @RequestBody UpdateProductSoldAndReturnCountDto updateProductSoldAndReturnCountDto
+    ) {
+        return productService.updateProductSoldAndReturnCount(productId, updateProductSoldAndReturnCountDto);
+    }
 }

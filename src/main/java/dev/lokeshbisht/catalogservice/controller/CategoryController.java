@@ -19,42 +19,42 @@ import java.util.Optional;
 @Tag(name = "CategoryController", description = "Category Controller")
 public class CategoryController {
 
-  @Autowired
-  private CategoryService categoryService;
+    @Autowired
+    private CategoryService categoryService;
 
-  @Operation(summary = "createCategory")
-  @PostMapping()
-  Category createCategory(@Valid @RequestBody CategoryDto categoryDto) {
-    return categoryService.createCategory(categoryDto);
-  }
+    @Operation(summary = "createCategory")
+    @PostMapping()
+    Category createCategory(@Valid @RequestBody CategoryDto categoryDto) {
+        return categoryService.createCategory(categoryDto);
+    }
 
-  @Operation(summary = "getCategory")
-  @GetMapping("/{id}")
-  Optional<Category> getCategory(@PathVariable("id") String categoryId) {
-    return categoryService.getCategory(categoryId);
-  }
+    @Operation(summary = "getCategory")
+    @GetMapping("/{id}")
+    Optional<Category> getCategory(@PathVariable("id") String categoryId) {
+        return categoryService.getCategory(categoryId);
+    }
 
-  @Operation(summary = "updateCategory")
-  @PutMapping("/{id}")
-  Category updateCategory(@PathVariable("id") String categoryId, @Valid @RequestBody CategoryDto categoryDto) {
-    return categoryService.updateCategory(categoryId, categoryDto);
-  }
+    @Operation(summary = "updateCategory")
+    @PutMapping("/{id}")
+    Category updateCategory(@PathVariable("id") String categoryId, @Valid @RequestBody CategoryDto categoryDto) {
+        return categoryService.updateCategory(categoryId, categoryDto);
+    }
 
-  @Operation(summary = "deleteCategory")
-  @DeleteMapping("/{id}")
-  public void deleteCategory(@PathVariable("id") String categoryId) {
-    categoryService.deleteCategory(categoryId);
-  }
+    @Operation(summary = "deleteCategory")
+    @DeleteMapping("/{id}")
+    public void deleteCategory(@PathVariable("id") String categoryId) {
+        categoryService.deleteCategory(categoryId);
+    }
 
-  @Operation(summary = "getAllCategories")
-  @GetMapping("/all")
-  public List<Category> getAllCategories() {
-    return categoryService.getAllCategories();
-  }
+    @Operation(summary = "getAllCategories")
+    @GetMapping("/all")
+    public List<Category> getAllCategories() {
+        return categoryService.getAllCategories();
+    }
 
-  @Operation(summary = "bulkCreateCategory")
-  @PostMapping("/bulk")
-  public void bulkCreateCategory(@Valid @RequestBody List<CategoryDto> categoryDtoList) {
-    categoryService.bulkCreateCategory(categoryDtoList);
-  }
+    @Operation(summary = "bulkCreateCategory")
+    @PostMapping("/bulk")
+    public void bulkCreateCategory(@Valid @RequestBody List<CategoryDto> categoryDtoList) {
+        categoryService.bulkCreateCategory(categoryDtoList);
+    }
 }
