@@ -24,58 +24,58 @@ import java.util.Optional;
 @Tag(name = "BrandController", description = "Brand Controller")
 public class BrandController {
 
-  @Autowired
-  private BrandService brandService;
+    @Autowired
+    private BrandService brandService;
 
-  @Operation(summary = "createBrand")
-  @PostMapping()
-  public Brand createBrand(@Valid @RequestBody BrandDto brandDto) {
-    return brandService.createBrand(brandDto);
-  }
+    @Operation(summary = "createBrand")
+    @PostMapping()
+    public Brand createBrand(@Valid @RequestBody BrandDto brandDto) {
+        return brandService.createBrand(brandDto);
+    }
 
-  @Operation(summary = "createBrand")
-  @GetMapping("/{id}")
-  public Optional<Brand> getBrand(@PathVariable("id") String brandId) {
-    return brandService.getBrand(brandId);
-  }
+    @Operation(summary = "createBrand")
+    @GetMapping("/{id}")
+    public Optional<Brand> getBrand(@PathVariable("id") String brandId) {
+        return brandService.getBrand(brandId);
+    }
 
-  @Operation(summary = "updateBrand")
-  @PutMapping("/{id}")
-  public Brand updateBrand(@PathVariable("id") String brandId, @Valid @RequestBody BrandDto brandDto) {
-    return brandService.updateBrand(brandId, brandDto);
-  }
+    @Operation(summary = "updateBrand")
+    @PutMapping("/{id}")
+    public Brand updateBrand(@PathVariable("id") String brandId, @Valid @RequestBody BrandDto brandDto) {
+        return brandService.updateBrand(brandId, brandDto);
+    }
 
-  @Operation(summary = "deleteBrand")
-  @DeleteMapping("/{id}")
-  public void deleteBrand(@PathVariable("id") String brandId) {
-    brandService.deleteBrand(brandId);
-  }
+    @Operation(summary = "deleteBrand")
+    @DeleteMapping("/{id}")
+    public void deleteBrand(@PathVariable("id") String brandId) {
+        brandService.deleteBrand(brandId);
+    }
 
-  @Operation(summary = "getAllBrandsByCategoryId")
-  @GetMapping("/category/{category_id}")
-  public List<Brand> getAllBrandsByCategoryId(@PathVariable("category_id") String categoryId) {
-    return brandService.getAllBrandsByCategoryId(categoryId);
-  }
+    @Operation(summary = "getAllBrandsByCategoryId")
+    @GetMapping("/category/{category_id}")
+    public List<Brand> getAllBrandsByCategoryId(@PathVariable("category_id") String categoryId) {
+        return brandService.getAllBrandsByCategoryId(categoryId);
+    }
 
-  @Operation(summary = "search")
-  @PostMapping("/search")
-  public BrandSearchResponseDto search(
-          @RequestParam(defaultValue = "") String query,
-          @RequestParam(defaultValue = "1") Integer page,
-          @RequestParam(defaultValue = "5") Integer size,
-          @RequestParam(defaultValue = "brandId") String sort,
-          @RequestParam(defaultValue = "ASC") String order,
-          @RequestBody(required = false)BrandSearchFilterDto filter
-          ) {
-    Pageable pageable = order.equalsIgnoreCase("ASC") ?
+    @Operation(summary = "search")
+    @PostMapping("/search")
+    public BrandSearchResponseDto search(
+        @RequestParam(defaultValue = "") String query,
+        @RequestParam(defaultValue = "1") Integer page,
+        @RequestParam(defaultValue = "5") Integer size,
+        @RequestParam(defaultValue = "brandId") String sort,
+        @RequestParam(defaultValue = "ASC") String order,
+        @RequestBody(required = false)BrandSearchFilterDto filter
+    ) {
+        Pageable pageable = order.equalsIgnoreCase("ASC") ?
             PageRequest.of(page, size, Sort.by(sort).ascending()) :
             PageRequest.of(page, size, Sort.by(sort).descending());
-    return brandService.search(query, pageable, filter);
-  }
+        return brandService.search(query, pageable, filter);
+    }
 
-  @Operation(summary = "bulkCreateBrand")
-  @PostMapping("/bulk")
-  public void bulkCreateBrand(@Valid @RequestBody List<BrandDto> brandDtoList) {
-    brandService.bulkCreateBrand(brandDtoList);
-  }
+    @Operation(summary = "bulkCreateBrand")
+    @PostMapping("/bulk")
+    public void bulkCreateBrand(@Valid @RequestBody List<BrandDto> brandDtoList) {
+        brandService.bulkCreateBrand(brandDtoList);
+    }
 }
