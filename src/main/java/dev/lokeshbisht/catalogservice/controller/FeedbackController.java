@@ -14,24 +14,24 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "FeedbackController", description = "Feedback Controller")
 public class FeedbackController {
 
-  @Autowired
-  private FeedbackService feedbackService;
+    @Autowired
+    private FeedbackService feedbackService;
 
-  @Operation(summary = "createProductFeedback")
-  @PostMapping("/product/{productId}")
-  public ProductFeedback createProductFeedback(@PathVariable() Integer productId, @Valid @RequestBody ProductFeedbackDto productFeedbackDto) {
-    return feedbackService.createProductFeedback(productFeedbackDto);
-  }
+    @Operation(summary = "createProductFeedback")
+    @PostMapping("/product/{productId}")
+    public ProductFeedback createProductFeedback(@PathVariable() Integer productId, @Valid @RequestBody ProductFeedbackDto productFeedbackDto) {
+        return feedbackService.createProductFeedback(productFeedbackDto);
+    }
 
-  @Operation(summary = "deleteProductFeedback")
-  @DeleteMapping("/product/{productId}")
-  public void deleteProductFeedback(@PathVariable Integer productId, @RequestParam(name = "user_id") Integer userId) {
-    feedbackService.deleteProductFeedback(productId, userId);
-  }
+    @Operation(summary = "deleteProductFeedback")
+    @DeleteMapping("/product/{productId}")
+    public void deleteProductFeedback(@PathVariable Integer productId, @RequestParam(name = "user_id") Integer userId) {
+        feedbackService.deleteProductFeedback(productId, userId);
+    }
 
-  @Operation(summary = "upsertProductFeedback")
-  @PutMapping("/product/{productId}")
-  public ProductFeedback upsertProductFeedback(@PathVariable Integer productId, @Valid @RequestBody ProductFeedbackDto productFeedbackDto) {
-    return feedbackService.upsertProductFeedback(productId, productFeedbackDto);
-  }
+    @Operation(summary = "upsertProductFeedback")
+    @PutMapping("/product/{productId}")
+    public ProductFeedback upsertProductFeedback(@PathVariable Integer productId, @Valid @RequestBody ProductFeedbackDto productFeedbackDto) {
+        return feedbackService.upsertProductFeedback(productId, productFeedbackDto);
+    }
 }
