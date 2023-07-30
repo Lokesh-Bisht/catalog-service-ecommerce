@@ -17,13 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -38,9 +36,9 @@ public class ProductServiceImpl implements ProductService {
   private ObjectMapper objectMapper;
 
   @Autowired
-  private KafkaTemplate kafkaTemplate;
+  private KafkaTemplate<String, String> kafkaTemplate;
 
-  @Value("${kafka.topic[0].product}")
+  @Value("${kafka.topic.product}")
   private String productTopic;
 
   private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -122,16 +120,16 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void bulkCreateProduct(List<ProductDto> productDtoList) {
     logger.info("Starting bulkCreateProduct");
-    for (ProductDto productDto : productDtoList) {
-      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(productTopic, productDto.getProductId().toString(), productDto);
-      future.whenComplete((result, ex) -> {
-        if (ex == null) {
-          logger.info("Successfully pushed message: {} to kafka topic: {}", productDto, productTopic);
-        } else {
-          logger.error("Error while pushing message: {} to kafka topic: {}", productDto, productTopic);
-        }
-      });
-    }
+//    for (ProductDto productDto : productDtoList) {
+//      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(productTopic, productDto.getProductId().toString(), productDto);
+//      future.whenComplete((result, ex) -> {
+//        if (ex == null) {
+//          logger.info("Successfully pushed message: {} to kafka topic: {}", productDto, productTopic);
+//        } else {
+//          logger.error("Error while pushing message: {} to kafka topic: {}", productDto, productTopic);
+//        }
+//      });
+//    }
   }
 
   @Override
