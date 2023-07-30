@@ -77,6 +77,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(FileUploadException.class)
+    public ResponseEntity<ErrorResponseDto> handleFileUploadException(FileUploadException ex) {
+        logger.error("FileUploadException: {}", ex.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.FILE_UPLOAD_ERROR, ex.getMessage());
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidResourceException.class)
+    public ResponseEntity<ErrorResponseDto> handleInvalidResourceException(InvalidResourceException ex) {
+        logger.error("InvalidResourceException: {}", ex.getMessage());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(ErrorCode.INVALID_RESOURCE, ex.getMessage());
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> handleValidationException(MethodArgumentNotValidException ex) {
         logger.error("MethodArgumentNotValidException: {}", ex.getMessage());
