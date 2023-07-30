@@ -33,9 +33,9 @@ public class CategoryServiceImpl implements CategoryService {
   private ObjectMapper objectMapper;
 
   @Autowired
-  private KafkaTemplate kafkaTemplate;
+  private KafkaTemplate<String, String> kafkaTemplate;
 
-  @Value("${kafka.topic[2].category}")
+  @Value("${kafka.topic.category}")
   private String categoryTopic;
 
   private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
@@ -116,15 +116,15 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public void bulkCreateCategory(List<CategoryDto> categoryDtoList) {
     logger.info("Starting bulkCreateCategory");
-    for (CategoryDto categoryDto : categoryDtoList) {
-      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(categoryTopic, categoryDto.getCategoryId().toString(), categoryDto);
-      future.whenComplete((result, ex) -> {
-        if (ex == null) {
-          logger.info("Successfully pushed message: {} to kafka topic: {}", categoryDto, categoryTopic);
-        } else {
-          logger.error("Error while pushing message: {} to kafka topic: {}", categoryDto, categoryTopic);
-        }
-      });
-    }
+//    for (CategoryDto categoryDto : categoryDtoList) {
+//      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(categoryTopic, categoryDto.getCategoryId().toString(), categoryDto);
+//      future.whenComplete((result, ex) -> {
+//        if (ex == null) {
+//          logger.info("Successfully pushed message: {} to kafka topic: {}", categoryDto, categoryTopic);
+//        } else {
+//          logger.error("Error while pushing message: {} to kafka topic: {}", categoryDto, categoryTopic);
+//        }
+//      });
+//    }
   }
 }

@@ -40,9 +40,9 @@ public class BrandServiceImpl implements BrandService {
   private ObjectMapper objectMapper;
 
   @Autowired
-  private KafkaTemplate kafkaTemplate;
+  private KafkaTemplate<String, String> kafkaTemplate;
 
-  @Value("${kafka.topic[1].brand}")
+  @Value("${kafka.topic.brand}")
   private String brandTopic;
 
   private static final Logger logger = LoggerFactory.getLogger(BrandServiceImpl.class);
@@ -132,15 +132,15 @@ public class BrandServiceImpl implements BrandService {
   @Override
   public void bulkCreateBrand(List<BrandDto> brandDtoList) {
     logger.info("Starting bulkCreateBrand");
-    for (BrandDto brandDto : brandDtoList) {
-      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(brandTopic, brandDto.getBrandId().toString(), brandDto);
-      future.whenComplete((result, ex) -> {
-        if (ex == null) {
-          logger.info("Successfully pushed message: {} to kafka topic: {}", brandDto, brandTopic);
-        } else {
-          logger.error("Error while pushing message: {} to kafka topic: {}", brandDto, brandTopic);
-        }
-      });
-    }
+//    for (BrandDto brandDto : brandDtoList) {
+//      CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(brandTopic, brandDto.getBrandId().toString(), brandDto);
+//      future.whenComplete((result, ex) -> {
+//        if (ex == null) {
+//          logger.info("Successfully pushed message: {} to kafka topic: {}", brandDto, brandTopic);
+//        } else {
+//          logger.error("Error while pushing message: {} to kafka topic: {}", brandDto, brandTopic);
+//        }
+//      });
+//    }
   }
 }
