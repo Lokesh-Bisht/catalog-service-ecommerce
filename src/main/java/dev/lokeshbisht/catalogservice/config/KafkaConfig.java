@@ -2,6 +2,7 @@ package dev.lokeshbisht.catalogservice.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,20 @@ public class KafkaConfig {
   private String kafkaBootstrapServer;
 
   @Bean
+  public ProducerFactory<String, String> producerFactory() {
+    Map<String, Object> props = new HashMap<>();
+    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServer);
+    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    return new DefaultKafkaProducerFactory<>(props);
+  }
+
+  @Bean
+  public KafkaTemplate<String, String> kafkaTemplate() {
+    return new KafkaTemplate<>(producerFactory());
+  }
+
+  @Bean
   public Map<String, Object> producerConfigs() {
     Map<String, Object> props = new HashMap<>();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServer);
@@ -29,12 +44,12 @@ public class KafkaConfig {
   }
 
   @Bean
-  public ProducerFactory<String, Object> producerFactory() {
+  public ProducerFactory<String, Object> producerFactory2() {
     return new DefaultKafkaProducerFactory<>(producerConfigs());
   }
 
-  @Bean
-  public KafkaTemplate<String, Object> kafkaTemplate() {
-    return new KafkaTemplate<>(producerFactory());
+  @Bean(name = "secondaryKafkaTemplate")
+  public KafkaTemplate<String, Object> kafkaTemplate2() {
+    return new KafkaTemplate<>(producerFactory2());
   }
 }
