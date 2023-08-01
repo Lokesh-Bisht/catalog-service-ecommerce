@@ -5,6 +5,7 @@ import dev.lokeshbisht.catalogservice.dto.brand.BrandSearchFilterDto;
 import dev.lokeshbisht.catalogservice.dto.brand.BrandSearchResponseDto;
 import dev.lokeshbisht.catalogservice.entity.Brand;
 import dev.lokeshbisht.catalogservice.service.BrandService;
+import dev.lokeshbisht.catalogservice.service.BulkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,9 @@ public class BrandController {
 
     @Autowired
     private BrandService brandService;
+
+    @Autowired
+    private BulkService bulkService;
 
     @Operation(summary = "createBrand")
     @PostMapping()
@@ -77,5 +82,10 @@ public class BrandController {
     @PostMapping("/bulk")
     public void bulkCreateBrand(@Valid @RequestBody List<BrandDto> brandDtoList) {
         brandService.bulkCreateBrand(brandDtoList);
+    }
+
+    @PostMapping("/bulk/upload")
+    public void bulkCreateBrandsFromFileUpload(@RequestPart("file") MultipartFile multipartFile, @RequestParam String userId) {
+        bulkService.bulkCreateAndUpdateBrands(multipartFile);
     }
 }
