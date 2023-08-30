@@ -59,13 +59,16 @@ public class XlsxServiceImpl implements XlsxService {
                     headers.add(String.valueOf(row.getCell(i)).toLowerCase());
                 }
             } else {
-                if ((row.getCell(0) == null && row.getCell(1) == null) ||
-                    ("".equals(String.valueOf(row.getCell(0))) && "".equals(String.valueOf(row.getCell(1))))
-                ){
-                    break;
-                }
+                int emptyCellsCount = 0;
                 for (int i = 0; i < maxColumns; ++i) {
-                    data.put(headers.get(i), String.valueOf(row.getCell(i)));
+                    String value = "null".equals(String.valueOf(row.getCell(i))) ? "" : String.valueOf(row.getCell(i));
+                    data.put(headers.get(i), value);
+                    if ("".equals(value)) {
+                        emptyCellsCount++;
+                    }
+                }
+                if (emptyCellsCount == maxColumns) {
+                    break;
                 }
                 BrandSheetDto brandSheetDto = objectMapper.convertValue(data, BrandSheetDto.class);
                 brandSheetDtoList.add(brandSheetDto);
