@@ -20,28 +20,28 @@ import java.util.List;
 @Repository
 public class CustomBrandRepositoryImpl implements CustomBrandRepository {
 
-  @Autowired
-  private MongoTemplate mongoTemplate;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-  private static final Logger logger = LoggerFactory.getLogger(CustomBrandRepositoryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomBrandRepositoryImpl.class);
 
-  @Override
-  public BrandSearchResponseDto search(String searchQuery, Pageable pageable, BrandSearchFilterDto filter) {
-    Query query = new Query();
-    List<Criteria> criteriaList = new ArrayList<>();
-    if (filter != null) {
-      if (filter.getCategoryId() != null) {
-        criteriaList.add(Criteria.where("categoryId").is(filter.getCategoryId()));
-      }
-      query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[criteriaList.size()])));
+    @Override
+    public BrandSearchResponseDto search(String searchQuery, Pageable pageable, BrandSearchFilterDto filter) {
+        Query query = new Query();
+        List<Criteria> criteriaList = new ArrayList<>();
+        if (filter != null) {
+            if (filter.getCategoryId() != null) {
+                criteriaList.add(Criteria.where("categoryId").is(filter.getCategoryId()));
+            }
+            query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[criteriaList.size()])));
+        }
+        if (!"".equals(searchQuery)) {
+            query.addCriteria(TextCriteria.forDefaultLanguage().caseSensitive(false).matching(searchQuery));
+        }
+        Long count = mongoTemplate.count(query, Brand.class);
+        query.with(pageable);
+        logger.info("Brand search query = {}", query);
+        List<Brand> result = mongoTemplate.find(query, Brand.class);
+        return new BrandSearchResponseDto(result, pageable.getPageNumber(), pageable.getPageSize(), count);
     }
-    if (!"".equals(searchQuery)) {
-      query.addCriteria(TextCriteria.forDefaultLanguage().caseSensitive(false).matching(searchQuery));
-    }
-    Long count = mongoTemplate.count(query, Brand.class);
-    query.with(pageable);
-    logger.info("Brand search query = {}", query);
-    List<Brand> result = mongoTemplate.find(query, Brand.class);
-    return new BrandSearchResponseDto(result, pageable.getPageNumber(), pageable.getPageSize(), count);
-  }
 }

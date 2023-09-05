@@ -22,54 +22,54 @@ import java.util.List;
 @Repository
 public class CustomProductRepositoryImpl implements CustomProductRepository {
 
-  @Autowired
-  private MongoTemplate mongoTemplate;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-  private static final Logger logger = LoggerFactory.getLogger(CustomProductRepositoryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomProductRepositoryImpl.class);
 
-  @Override
-  public ProductSearchResponseDto search(String searchQuery, Pageable pageable, ProductSearchFilterDto filter) {
-    List<Criteria> criteriaList = new ArrayList<>();
-    Query query = new Query();
-    if (filter != null) {
-      if (filter.getBrandId() != null) {
-        criteriaList.add(Criteria.where("brandId").is(filter.getBrandId()));
-      }
-      if (filter.getCategoryId() != null) {
-        criteriaList.add(Criteria.where("categoryId").is(filter.getCategoryId()));
-      }
-      if (filter.getMinPrice() != null && filter.getMaxPrice() != null) {
-        criteriaList.add(Criteria.where("price").gte(filter.getMinPrice()).lte(filter.getMaxPrice()));
-      }
-      query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[criteriaList.size()])));
+    @Override
+    public ProductSearchResponseDto search(String searchQuery, Pageable pageable, ProductSearchFilterDto filter) {
+        List<Criteria> criteriaList = new ArrayList<>();
+        Query query = new Query();
+        if (filter != null) {
+            if (filter.getBrandId() != null) {
+                criteriaList.add(Criteria.where("brandId").is(filter.getBrandId()));
+            }
+            if (filter.getCategoryId() != null) {
+                criteriaList.add(Criteria.where("categoryId").is(filter.getCategoryId()));
+            }
+            if (filter.getMinPrice() != null && filter.getMaxPrice() != null) {
+                criteriaList.add(Criteria.where("price").gte(filter.getMinPrice()).lte(filter.getMaxPrice()));
+            }
+            query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[criteriaList.size()])));
+        }
+
+        if (!"".equals(searchQuery)) {
+            query.addCriteria(TextCriteria.forDefaultLanguage().caseSensitive(false).matching(searchQuery));
+        }
+        Long count = mongoTemplate.count(query, Product.class);
+        query.with(pageable);
+        logger.debug("Product search query = {}", query);
+        List<Product> result = mongoTemplate.find(query, Product.class);
+        return new ProductSearchResponseDto(result, pageable.getPageNumber(), pageable.getPageSize(), count);
     }
 
-    if (!"".equals(searchQuery)) {
-      query.addCriteria(TextCriteria.forDefaultLanguage().caseSensitive(false).matching(searchQuery));
+    @Override
+    public MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts() {
+        Query query = new Query();
+        query.with(Sort.by(Sort.Direction.DESC, "soldCount")).limit(5);
+        logger.info("Executing query to find top five most sold products: {}", query);
+        List<Product> mostSold = mongoTemplate.find(query, Product.class);
+        query.with(Sort.by(Sort.Direction.ASC, "soldCount")).limit(5);
+        logger.info("Executing query to find top five least sold products: {}", query);
+        List<Product> leastSold = mongoTemplate.find(query, Product.class);
+        return new MostAndLeastSoldProductsDto(mostSold, leastSold);
     }
-    Long count = mongoTemplate.count(query, Product.class);
-    query.with(pageable);
-    logger.debug("Product search query = {}", query);
-    List<Product> result = mongoTemplate.find(query, Product.class);
-    return new ProductSearchResponseDto(result, pageable.getPageNumber(), pageable.getPageSize(), count);
-  }
 
-  @Override
-  public MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts() {
-    Query query = new Query();
-    query.with(Sort.by(Sort.Direction.DESC, "soldCount")).limit(5);
-    logger.info("Executing query to find top five most sold products: {}", query);
-    List<Product> mostSold = mongoTemplate.find(query, Product.class);
-    query.with(Sort.by(Sort.Direction.ASC, "soldCount")).limit(5);
-    logger.info("Executing query to find top five least sold products: {}", query);
-    List<Product> leastSold = mongoTemplate.find(query, Product.class);
-    return new MostAndLeastSoldProductsDto(mostSold, leastSold);
-  }
-
-  @Override
-  public List<Product> findTopTenMostReturnProducts() {
-    Query query = new Query();
-    query.with(Sort.by(Sort.Direction.DESC, "returnCount")).limit(10);
-    return mongoTemplate.find(query, Product.class);
-  }
+    @Override
+    public List<Product> findTopTenMostReturnProducts() {
+        Query query = new Query();
+        query.with(Sort.by(Sort.Direction.DESC, "returnCount")).limit(10);
+        return mongoTemplate.find(query, Product.class);
+    }
 }

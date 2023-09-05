@@ -11,18 +11,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CustomProductFeedbackRepositoryImpl implements CustomProductFeedbackRepository {
 
-  @Autowired
-  private MongoTemplate mongoTemplate;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-  @Override
-  public ProductFeedback findProductFeedbackByUser(Integer productId, Integer userId) {
-    Query query = new Query(Criteria.where("productId").is(productId).andOperator(Criteria.where("userId").is(userId)));
-    return mongoTemplate.findOne(query, ProductFeedback.class);
-  }
+    @Override
+    public ProductFeedback findProductFeedbackByUser(Integer productId, Integer userId) {
+        Query query = new Query(Criteria.where("productId").is(productId).andOperator(Criteria.where("userId").is(userId)));
+        return mongoTemplate.findOne(query, ProductFeedback.class);
+    }
 
-  @Override
-  public void deleteProductFeedbackByUserAndProductId(Integer productId, Integer userId) {
-    Query query = new Query(Criteria.where("productId").is(productId).andOperator(Criteria.where("userId").is(userId)));
-    mongoTemplate.remove(query, ProductFeedback.class);
-  }
+    @Override
+    public void deleteProductFeedbackByUserAndProductId(Integer productId, Integer userId) {
+        Query query = new Query(Criteria.where("productId").is(productId).andOperator(Criteria.where("userId").is(userId)));
+        mongoTemplate.remove(query, ProductFeedback.class);
+    }
 }
