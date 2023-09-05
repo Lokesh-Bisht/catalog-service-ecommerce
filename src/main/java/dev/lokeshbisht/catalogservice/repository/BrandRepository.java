@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface BrandRepository extends MongoRepository<Brand, String> {
 
-  Optional<Brand> findByBrandId(Integer brandId);
-  void deleteByBrandId(Integer brandId);
-  List<Brand> findAllByCategoryId(Integer categoryId);
+    Optional<Brand> findByBrandId(Integer brandId);
+    void deleteByBrandId(Integer brandId);
+    List<Brand> findAllByCategoryId(Integer categoryId);
 }
