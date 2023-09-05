@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CustomProductRepository {
 
-  ProductSearchResponseDto search(String searchQuery, Pageable pageable, ProductSearchFilterDto filter);
-  MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts();
-  List<Product> findTopTenMostReturnProducts();
+    ProductSearchResponseDto search(String searchQuery, Pageable pageable, ProductSearchFilterDto filter);
+    MostAndLeastSoldProductsDto topFiveMostAndLeastSoldProducts();
+    List<Product> findTopTenMostReturnProducts();
 }

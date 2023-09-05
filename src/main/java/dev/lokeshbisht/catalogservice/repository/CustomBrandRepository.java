@@ -5,5 +5,5 @@ import dev.lokeshbisht.catalogservice.dto.brand.BrandSearchResponseDto;
 import org.springframework.data.domain.Pageable;
 
 public interface CustomBrandRepository {
-  BrandSearchResponseDto search(String searchQuery, Pageable pageable, BrandSearchFilterDto filter);
+    BrandSearchResponseDto search(String searchQuery, Pageable pageable, BrandSearchFilterDto filter);
 }
