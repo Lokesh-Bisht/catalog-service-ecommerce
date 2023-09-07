@@ -9,21 +9,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("product_feedback")
 public class ProductFeedback {
 
-  @Id
-  @JsonProperty("_id")
-  private String id;
+    @Id
+    @JsonProperty("_id")
+    private String id;
 
-  @JsonProperty("user_id")
-  private Integer userId;
+    @JsonProperty("user_id")
+    private Integer userId;
 
-  @JsonProperty("product_id")
-  private Integer productId;
+    @JsonProperty("product_id")
+    private Integer productId;
 
-  private Integer rating;
+    private Integer rating;
 
-  private String comment;
+    private String comment;
 
-  private Long createdAt;
+    private Long createdAt;
 
-  private Long updatedAt;
+    private Long updatedAt;
 }
