@@ -10,35 +10,35 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Brand {
 
-  @Id
-  @JsonProperty("_id")
-  private String id;
+    @Id
+    @JsonProperty("_id")
+    private String id;
 
-  @JsonProperty("brand_id")
-  private Integer brandId;
+    @JsonProperty("brand_id")
+    private Integer brandId;
 
-  @JsonProperty("category_id")
-  private Integer categoryId;
+    @JsonProperty("category_id")
+    private Integer categoryId;
 
-  @JsonProperty("brand_name")
-  @TextIndexed
-  private String brandName;
+    @JsonProperty("brand_name")
+    @TextIndexed
+    private String brandName;
 
-  @TextIndexed
-  private String description;
+    @TextIndexed
+    private String description;
 
-  @JsonProperty("brand_logo")
-  private String brandLogo;
+    @JsonProperty("brand_logo")
+    private String brandLogo;
 
-  @JsonProperty("created_at")
-  private Long createdAt;
+    @JsonProperty("created_at")
+    private Long createdAt;
 
-  @JsonProperty("created_by")
-  private String createdBy;
+    @JsonProperty("created_by")
+    private String createdBy;
 
-  @JsonProperty("updated_at")
-  private Long updatedAt;
+    @JsonProperty("updated_at")
+    private Long updatedAt;
 
-  @JsonProperty("updated_by")
-  private String updatedBy;
+    @JsonProperty("updated_by")
+    private String updatedBy;
 }
