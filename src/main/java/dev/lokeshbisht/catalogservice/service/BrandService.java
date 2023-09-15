@@ -11,11 +11,11 @@ import java.util.Optional;
 
 public interface BrandService {
 
-  Brand createBrand(BrandDto brandDto);
-  Optional<Brand> getBrand(String brandId);
-  Brand updateBrand(String brandId, BrandDto brandDto);
-  void deleteBrand(String brandId);
-  List<Brand> getAllBrandsByCategoryId(String categoryId);
-  BrandSearchResponseDto search(String query, Pageable page, BrandSearchFilterDto filter);
-  void bulkCreateBrand(List<BrandDto> brandDtoList);
+    Brand createBrand(BrandDto brandDto);
+    Optional<Brand> getBrand(String brandId);
+    Brand updateBrand(String brandId, BrandDto brandDto);
+    void deleteBrand(String brandId);
+    List<Brand> getAllBrandsByCategoryId(String categoryId);
+    BrandSearchResponseDto search(String query, Pageable page, BrandSearchFilterDto filter);
+    void bulkCreateBrand(List<BrandDto> brandDtoList);
 }
