@@ -20,69 +20,69 @@ import java.time.Instant;
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
 
-  private static final Logger logger = LoggerFactory.getLogger(FeedbackServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(FeedbackServiceImpl.class);
 
-  @Autowired
-  private ProductFeedbackRepository productFeedbackRepository;
+    @Autowired
+    private ProductFeedbackRepository productFeedbackRepository;
 
-  @Autowired
-  private CustomProductFeedbackRepository customProductFeedbackRepository;
+    @Autowired
+    private CustomProductFeedbackRepository customProductFeedbackRepository;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-  @Override
-  public ProductFeedback createProductFeedback(ProductFeedbackDto productFeedbackDto) {
-    logger.info("Saving user feedback for product: {}", productFeedbackDto);
-    ProductFeedback productFeedback;
-    try {
-      productFeedback = objectMapper.readValue(objectMapper.writeValueAsString(productFeedbackDto), ProductFeedback.class);
-    } catch (JsonMappingException e) {
-      logger.error("Error occurred during updating document: {}", productFeedbackDto);
-      throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
-    } catch (JsonProcessingException e) {
-      logger.error("Error occurred during updating document: {}", productFeedbackDto);
-      throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
+    @Override
+    public ProductFeedback createProductFeedback(ProductFeedbackDto productFeedbackDto) {
+        logger.info("Saving user feedback for product: {}", productFeedbackDto);
+        ProductFeedback productFeedback;
+        try {
+            productFeedback = objectMapper.readValue(objectMapper.writeValueAsString(productFeedbackDto), ProductFeedback.class);
+        } catch (JsonMappingException e) {
+            logger.error("Error occurred during updating document: {}", productFeedbackDto);
+            throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
+        } catch (JsonProcessingException e) {
+            logger.error("Error occurred during updating document: {}", productFeedbackDto);
+            throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
+        }
+        productFeedback.setCreatedAt(Instant.now().getEpochSecond());
+        logger.info("User feedback for product {} is saved successfully.", productFeedback.getProductId());
+        productFeedbackRepository.save(productFeedback);
+        return productFeedback;
     }
-    productFeedback.setCreatedAt(Instant.now().getEpochSecond());
-    logger.info("User feedback for product {} is saved successfully.", productFeedback.getProductId());
-    productFeedbackRepository.save(productFeedback);
-    return productFeedback;
-  }
 
-  @Override
-  public void deleteProductFeedback(Integer productId, Integer userId) {
-    logger.info("Delete feedback for user {} and product {}", userId, productId);
-    if (customProductFeedbackRepository.findProductFeedbackByUser(productId, userId).getId() == null) {
-      logger.error("User {} feedback not found for product {}", userId, productId);
-      throw new FeedbackNotFoundException("User " + userId + " feedback not found for product " + productId);
+    @Override
+    public void deleteProductFeedback(Integer productId, Integer userId) {
+        logger.info("Delete feedback for user {} and product {}", userId, productId);
+        if (customProductFeedbackRepository.findProductFeedbackByUser(productId, userId).getId() == null) {
+            logger.error("User {} feedback not found for product {}", userId, productId);
+            throw new FeedbackNotFoundException("User " + userId + " feedback not found for product " + productId);
+        }
+        customProductFeedbackRepository.deleteProductFeedbackByUserAndProductId(productId, userId);
     }
-    customProductFeedbackRepository.deleteProductFeedbackByUserAndProductId(productId, userId);
-  }
 
-  @Override
-  public ProductFeedback upsertProductFeedback(Integer productId, ProductFeedbackDto productFeedbackDto) {
-    logger.info("Upsert product feedback for productId: {} and feedback: {}", productId, productFeedbackDto);
-    ProductFeedback productFeedback;
-    try {
-      productFeedback = objectMapper.readValue(objectMapper.writeValueAsString(productFeedbackDto), ProductFeedback.class);
-    } catch (JsonMappingException e) {
-      logger.error("Error occurred during updating document: {}", productFeedbackDto);
-      throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
-    } catch (JsonProcessingException e) {
-      logger.error("Error occurred during updating document: {}", productFeedbackDto);
-      throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
+    @Override
+    public ProductFeedback upsertProductFeedback(Integer productId, ProductFeedbackDto productFeedbackDto) {
+        logger.info("Upsert product feedback for productId: {} and feedback: {}", productId, productFeedbackDto);
+        ProductFeedback productFeedback;
+        try {
+            productFeedback = objectMapper.readValue(objectMapper.writeValueAsString(productFeedbackDto), ProductFeedback.class);
+        } catch (JsonMappingException e) {
+            logger.error("Error occurred during updating document: {}", productFeedbackDto);
+            throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
+        } catch (JsonProcessingException e) {
+            logger.error("Error occurred during updating document: {}", productFeedbackDto);
+            throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
+        }
+        ProductFeedback oldProductFeedback = customProductFeedbackRepository.findProductFeedbackByUser(productId, productFeedback.getUserId());
+        if (oldProductFeedback == null) {
+            productFeedback.setCreatedAt(Instant.now().getEpochSecond());
+            logger.info("Inserting product feedback: {}", productFeedback);
+        } else {
+            productFeedback.setId(oldProductFeedback.getId());
+            productFeedback.setCreatedAt(oldProductFeedback.getCreatedAt());
+            productFeedback.setUpdatedAt(Instant.now().getEpochSecond());
+            logger.info("Updating product feedback: {}", productFeedback);
+        }
+        return productFeedbackRepository.save(productFeedback);
     }
-    ProductFeedback oldProductFeedback = customProductFeedbackRepository.findProductFeedbackByUser(productId, productFeedback.getUserId());
-    if (oldProductFeedback == null) {
-      productFeedback.setCreatedAt(Instant.now().getEpochSecond());
-      logger.info("Inserting product feedback: {}", productFeedback);
-    } else {
-      productFeedback.setId(oldProductFeedback.getId());
-      productFeedback.setCreatedAt(oldProductFeedback.getCreatedAt());
-      productFeedback.setUpdatedAt(Instant.now().getEpochSecond());
-      logger.info("Updating product feedback: {}", productFeedback);
-    }
-    return productFeedbackRepository.save(productFeedback);
-  }
 }
