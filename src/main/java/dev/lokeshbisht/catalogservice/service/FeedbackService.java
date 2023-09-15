@@ -5,7 +5,7 @@ import dev.lokeshbisht.catalogservice.entity.ProductFeedback;
 
 public interface FeedbackService {
 
-  ProductFeedback createProductFeedback(ProductFeedbackDto productFeedbackDto);
-  void deleteProductFeedback(Integer productId, Integer userId);
-  ProductFeedback upsertProductFeedback(Integer productId, ProductFeedbackDto productFeedbackDto);
+    ProductFeedback createProductFeedback(ProductFeedbackDto productFeedbackDto);
+    void deleteProductFeedback(Integer productId, Integer userId);
+    ProductFeedback upsertProductFeedback(Integer productId, ProductFeedbackDto productFeedbackDto);
 }
