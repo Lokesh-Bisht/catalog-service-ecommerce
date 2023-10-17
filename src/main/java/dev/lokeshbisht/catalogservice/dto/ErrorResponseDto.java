@@ -13,17 +13,17 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponseDto {
 
-  @JsonProperty("error_code")
-  private ErrorCode errorCode;
+    @JsonProperty("error_code")
+    private ErrorCode errorCode;
 
-  @JsonProperty("error_message")
-  private String errorMessage;
+    @JsonProperty("error_message")
+    private String errorMessage;
 
-  @JsonProperty("errors")
-  private Object errors;
+    @JsonProperty("errors")
+    private Object errors;
 
-  public ErrorResponseDto(ErrorCode errorCode, String errorMessage) {
-    this.errorCode = errorCode;
-    this.errorMessage = errorMessage;
-  }
+    public ErrorResponseDto(ErrorCode errorCode, String errorMessage) {
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+    }
 }
