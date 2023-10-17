@@ -1,13 +1,10 @@
 package dev.lokeshbisht.catalogservice.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.lokeshbisht.catalogservice.dto.category.CategoryDto;
 import dev.lokeshbisht.catalogservice.entity.Category;
 import dev.lokeshbisht.catalogservice.exceptions.CategoryAlreadyExistsException;
 import dev.lokeshbisht.catalogservice.exceptions.CategoryNotFoundException;
-import dev.lokeshbisht.catalogservice.exceptions.JsonRuntimeException;
+import dev.lokeshbisht.catalogservice.mapper.CategoryMapper;
 import dev.lokeshbisht.catalogservice.repository.CategoryRepository;
 import dev.lokeshbisht.catalogservice.service.CategoryService;
 import org.slf4j.Logger;
@@ -28,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private CategoryMapper categoryMapper;
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -41,29 +38,20 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category createCategory(CategoryDto categoryDto) {
         logger.info("Saving category: {}", categoryDto);
-        if (!categoryRepository.findByCategoryId(categoryDto.getCategoryId()).isEmpty()) {
+        if (categoryRepository.findByCategoryId(categoryDto.getCategoryId()).isPresent()) {
             logger.error("Error occurred while saving category. Category already exists!");
             throw new CategoryAlreadyExistsException("Category Already Exists.");
         }
-        try {
-            Category category = objectMapper.readValue(objectMapper.writeValueAsString(categoryDto), Category.class);
-            category.setCreatedAt(Instant.now().getEpochSecond());
-            logger.info("Successfully added category: {}", category);
-            return categoryRepository.save(category);
-        } catch (JsonMappingException e) {
-            logger.error("Error occurred during saving document: {}", categoryDto);
-            throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
-        } catch (JsonProcessingException e) {
-            logger.error("Error occurred during saving document: {}", categoryDto);
-            throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion.", e);
-        }
+        Category category = categoryMapper.toCategory(categoryDto);
+        category.setCreatedAt(Instant.now().getEpochSecond());
+        logger.info("Successfully added category: {}", category);
+        return categoryRepository.save(category);
     }
 
     @Override
     public Optional<Category> getCategory(String categoryId) {
         logger.info("Get category with id: {}", categoryId);
         if (categoryRepository.findByCategoryId(Integer.parseInt(categoryId)).isEmpty()) {
-            logger.error("Category not found!");
             throw new CategoryNotFoundException("Category not found!");
         }
         return categoryRepository.findByCategoryId(Integer.parseInt(categoryId));
@@ -77,28 +65,19 @@ public class CategoryServiceImpl implements CategoryService {
             logger.error("Category with id {} is not found.", categoryId);
             throw new CategoryNotFoundException("Category not found!");
         }
-        try {
-            Category updatedCategory = objectMapper.readValue(objectMapper.writeValueAsString(categoryDto), Category.class);
-            updatedCategory.setId(category.get().getId());
-            updatedCategory.setCreatedBy(category.get().getCreatedBy());
-            updatedCategory.setCreatedAt(category.get().getCreatedAt());
-            updatedCategory.setUpdatedAt(Instant.now().getEpochSecond());
-            logger.info("Successfully updated category: {}", updatedCategory);
-            return categoryRepository.save(updatedCategory);
-        } catch (JsonMappingException e) {
-            logger.error("Error occurred during updating document: {}", categoryDto);
-            throw new JsonRuntimeException("Json Mapping exception encountered during object to string conversion", e);
-        } catch (JsonProcessingException e) {
-            logger.error("Error occurred during updating document: {}", categoryDto);
-            throw new JsonRuntimeException("Json Processing exception encountered during object to string conversion", e);
-        }
+        Category updatedCategory = categoryMapper.toCategory(categoryDto);
+        updatedCategory.setId(category.get().getId());
+        updatedCategory.setCreatedBy(category.get().getCreatedBy());
+        updatedCategory.setCreatedAt(category.get().getCreatedAt());
+        updatedCategory.setUpdatedAt(Instant.now().getEpochSecond());
+        logger.info("Successfully updated category: {}", updatedCategory);
+        return categoryRepository.save(updatedCategory);
     }
 
     @Override
     public void deleteCategory(String categoryId) {
         logger.info("Delete category with id: {}", categoryId);
         if (categoryRepository.findByCategoryId(Integer.parseInt(categoryId)).isEmpty()) {
-            logger.error("Category with id {} is not found.", categoryId);
             throw new CategoryNotFoundException("Category not found!");
         }
         categoryRepository.deleteByCategoryId(Integer.parseInt(categoryId));
