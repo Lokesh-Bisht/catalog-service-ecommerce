@@ -1,3 +1,9 @@
+/**
+ * Copyright (C) 2023 Lokesh Bisht
+ *
+ * Licensed under the Apache Software License version 2.0, available at http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package dev.lokeshbisht.catalogservice.config;
 
 import io.swagger.v3.oas.models.Components;
@@ -10,16 +16,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-  @Bean
-  public OpenAPI springShopOpenAPI() {
-    return new OpenAPI()
+    @Bean
+    public OpenAPI springShopOpenAPI() {
+        return new OpenAPI()
             .components(new Components().addSecuritySchemes("TokenScheme",
-                    new SecurityScheme().type(SecurityScheme.Type.APIKEY)
-                            .scheme("Token")
-                            .name("Authorization")
-                            .in(SecurityScheme.In.HEADER)))
+                new SecurityScheme().type(SecurityScheme.Type.APIKEY)
+                    .scheme("Token")
+                    .name("Authorization")
+                    .in(SecurityScheme.In.HEADER)))
             .info(new Info().title("Catalog Service API")
-                    .description("Swagger for Catalog Service")
-                    .version("v0.0.1"));
-  }
+                .description("Swagger for Catalog Service")
+                .version("v0.0.1"));
+    }
 }
