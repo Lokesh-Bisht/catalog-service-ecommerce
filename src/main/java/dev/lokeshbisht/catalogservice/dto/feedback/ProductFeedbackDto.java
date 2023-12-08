@@ -1,3 +1,9 @@
+/**
+ * Copyright (C) 2023 Lokesh Bisht
+ *
+ * Licensed under the Apache Software License version 2.0, available at http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package dev.lokeshbisht.catalogservice.dto.feedback;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,24 +15,24 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductFeedbackDto {
 
-  @NotNull(message = "UserId is required.")
-  @JsonProperty("user_id")
-  private Integer userId;
+    @NotNull(message = "UserId is required.")
+    @JsonProperty("user_id")
+    private Integer userId;
 
-  @NotNull(message = "ProductId is required.")
-  @JsonProperty("product_id")
-  private Integer productId;
+    @NotNull(message = "ProductId is required.")
+    @JsonProperty("product_id")
+    private Integer productId;
 
-  @NotNull(message = "Rating is required.")
-  @JsonProperty("rating")
-  private Integer rating;
+    @NotNull(message = "Rating is required.")
+    @JsonProperty("rating")
+    private Integer rating;
 
-  @JsonProperty("comment")
-  private String comment;
+    @JsonProperty("comment")
+    private String comment;
 
-  @JsonProperty("created_at")
-  private Long createdAt;
+    @JsonProperty("created_at")
+    private Long createdAt;
 
-  @JsonProperty("updated_at")
-  private Long updatedAt;
+    @JsonProperty("updated_at")
+    private Long updatedAt;
 }
