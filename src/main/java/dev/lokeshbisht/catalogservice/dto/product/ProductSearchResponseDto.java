@@ -1,3 +1,9 @@
+/**
+ * Copyright (C) 2023 Lokesh Bisht
+ *
+ * Licensed under the Apache Software License version 2.0, available at http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package dev.lokeshbisht.catalogservice.dto.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,15 +21,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductSearchResponseDto {
 
-  @JsonProperty("products")
-  private List<Product> products;
+    @JsonProperty("products")
+    private List<Product> products;
 
-  @JsonProperty("page")
-  private Integer page;
+    @JsonProperty("page")
+    private Integer page;
 
-  @JsonProperty("size")
-  private Integer size;
+    @JsonProperty("size")
+    private Integer size;
 
-  @JsonProperty("count")
-  private Long count;
+    @JsonProperty("count")
+    private Long count;
 }
