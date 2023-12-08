@@ -1,3 +1,9 @@
+/**
+ * Copyright (C) 2023 Lokesh Bisht
+ *
+ * Licensed under the Apache Software License version 2.0, available at http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 package dev.lokeshbisht.catalogservice.dto.category;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,23 +20,23 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CategoryDto {
 
-  @NotNull(message = "Category id is required.")
-  @JsonProperty("category_id")
-  private Integer categoryId;
+    @NotNull(message = "Category id is required.")
+    @JsonProperty("category_id")
+    private Integer categoryId;
 
-  @NotBlank(message = "Category name is required")
-  @JsonProperty("category_name")
-  private String categoryName;
+    @NotBlank(message = "Category name is required")
+    @JsonProperty("category_name")
+    private String categoryName;
 
-  @JsonProperty("created_at")
-  private Long createdAt;
+    @JsonProperty("created_at")
+    private Long createdAt;
 
-  @JsonProperty("created_by")
-  private String createdBy;
+    @JsonProperty("created_by")
+    private String createdBy;
 
-  @JsonProperty("updated_at")
-  private Long updatedAt;
+    @JsonProperty("updated_at")
+    private Long updatedAt;
 
-  @JsonProperty("updated_by")
-  private String updatedBy;
+    @JsonProperty("updated_by")
+    private String updatedBy;
 }
